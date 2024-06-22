@@ -23,8 +23,14 @@
   justify-content: center;
   width: 80px;
   height: 80px;
-  border: dotted 1px;
-  border-color: black;
+}
+
+.cellstyle:nth-child(odd) {
+  background-color: f7c899;
+}
+
+.cellstyle:nth-child(even) {
+  background-color: ca8745;
 }
 
 .stonestyle {
@@ -35,21 +41,9 @@
   border-radius: 50%;
 }
 
-.textlarge {
-  font-size: 35px;
-}
-
 .blue {
   width: 14px;
   height: 14px;
   cursor: pointer;
   border-radius: 50%;
-}
-
-.text {
-  padding: 5px 10px; /* パディングを追加して余白を作る */
-  font-family: Arial, sans-serif;
-  font-size: 30px;
-  font-weight: bold;
-  color: #333; /* 落ち着いたダークグレー */
 }
