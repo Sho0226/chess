@@ -65,13 +65,16 @@ const Home = () => {
             return (
               <div
                 className={styles.cellstyle}
+                style={cellStyle}
                 key={`${x}-${y}`}
                 onClick={() => clickHandler(x, y)}
               >
                 {color !== 0 && (
                   <div
-                    className={`${styles.stonestyle} ${color === 3 ? styles.blue : ''}`}
-                    style={{ background: color === 1 ? '#000' : color === 2 ? '#fff' : '#00f' }}
+                    className={styles.stonestyle}
+                    style={{
+                      background: color === 1 ? '#000' : color === 2 ? '#fff' : '#00f',
+                    }}
                   />
                 )}
               </div>
