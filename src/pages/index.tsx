@@ -1,19 +1,6 @@
 import styles from './index.module.css';
 import { useState } from 'react';
-
-// 画像のパスを文字列として指定
-const oneWhite = '/assets/images/1w.png';
-const oneBlack = '/assets/images/1b.png';
-const twoWhite = '/assets/images/2w.png';
-const twoBlack = '/assets/images/2b.png';
-const threeWhite = '/assets/images/3w.png';
-const threeBlack = '/assets/images/3b.png';
-const fourWhite = '/assets/images/4w.png';
-const fourBlack = '/assets/images/4b.png';
-const fiveWhite = '/assets/images/5w.png';
-const fiveBlack = '/assets/images/5b.png';
-const sixWhite = '/assets/images/6w.png';
-const sixBlack = '/assets/images/6b.png';
+import SampleImage from '../assets/images/1b.png';
 
 const Home = () => {
   const [turnColor, setTurnColor] = useState(1);
@@ -95,6 +82,11 @@ const Home = () => {
             const cellStyle = {
               backgroundColor: isEven ? '#f7c899' : '#ca8745',
             };
+            let content = null;
+            if (color !== 0) {
+              content = <img src={SampleImage.src} alt="1b.png" />;
+            }
+
             return (
               <div
                 className={styles.cellstyle}
@@ -102,7 +94,7 @@ const Home = () => {
                 key={`${x}-${y}`}
                 onClick={() => clickHandler(x, y)}
               >
-                {color !== 0 && <img src="~/assets/images/1b.png" alt={`stone-${color}`} />}
+                {content}
               </div>
             );
           }),
