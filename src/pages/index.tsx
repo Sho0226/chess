@@ -65,7 +65,6 @@ const Home = () => {
             return (
               <div
                 className={styles.cellstyle}
-                style={cellStyle}
                 key={`${x}-${y}`}
                 onClick={() => clickHandler(x, y)}
               >
