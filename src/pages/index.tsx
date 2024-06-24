@@ -30,36 +30,32 @@ const Home = () => {
   const newBoard = structuredClone(board);
   const clickHandler = (x: number, y: number) => {};
 
-  const getImageSrc = (color: number, y: number, x: number) => {
-    if (board[y] !== undefined) {
-      if (board[y][x] !== undefined) {
-        switch (color) {
-          case 1:
-            return oneWhite;
-          case 2:
-            return twoWhite;
-          case 3:
-            return threeWhite;
-          case 4:
-            return fourWhite;
-          case 5:
-            return fiveWhite;
-          case 6:
-            return sixWhite;
-          case -1:
-            return oneBlack;
-          case -2:
-            return twoBlack;
-          case -3:
-            return threeBlack;
-          case -4:
-            return fourBlack;
-          case -5:
-            return fiveBlack;
-          case -6:
-            return sixBlack;
-        }
-      }
+  const getImageSrc = (color: number) => {
+    switch (color) {
+      case 1:
+        return oneWhite;
+      case 2:
+        return twoWhite;
+      case 3:
+        return threeWhite;
+      case 4:
+        return fourWhite;
+      case 5:
+        return fiveWhite;
+      case 6:
+        return sixWhite;
+      case -1:
+        return oneBlack;
+      case -2:
+        return twoBlack;
+      case -3:
+        return threeBlack;
+      case -4:
+        return fourBlack;
+      case -5:
+        return fiveBlack;
+      case -6:
+        return sixBlack;
     }
   };
 
@@ -74,7 +70,7 @@ const Home = () => {
             };
             let content = null;
             if (color !== 0) {
-              content = <img className={styles.imgstyle} src={getImageSrc(color, y, x)?.src} />;
+              content = <img className={styles.imgstyle} src={getImageSrc(color)?.src} />;
             }
 
             return (
