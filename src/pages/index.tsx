@@ -14,10 +14,11 @@ import sixBlack from '../assets/images/6b.png';
 import sixWhite from '../assets/images/6w.png';
 
 const Home = () => {
-  const [turnColor, setTurnColor] = useState(1);
+  const [turn, setTurn] = useState(1);
+  const [chess, setChess] = useState();
   const [board, setBoard] = useState([
-    [2, 3, 4, 6, 5, 4, 3, 2],
-    [1, 1, 1, 1, 1, 1, 1, 1],
+    [-2, -3, -4, -6, -5, -4, -3, -2],
+    [-1, -1, -1, -1, -1, -1, -1, -1],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -29,20 +30,36 @@ const Home = () => {
   const newBoard = structuredClone(board);
   const clickHandler = (x: number, y: number) => {};
 
-  const getImageSrc = (color: number) => {
-    switch (color) {
-      case 1:
-        return turnColor === 1 ? oneWhite : oneBlack;
-      case 2:
-        return turnColor === 1 ? twoWhite : twoBlack;
-      case 3:
-        return turnColor === 1 ? threeWhite : threeBlack;
-      case 4:
-        return turnColor === 1 ? fourWhite : fourBlack;
-      case 5:
-        return turnColor === 1 ? fiveWhite : fiveBlack;
-      case 6:
-        return turnColor === 1 ? sixWhite : sixBlack;
+  const getImageSrc = (color: number, y: number, x: number) => {
+    if (board[y] !== undefined) {
+      if (board[y][x] !== undefined) {
+        switch (color) {
+          case 1:
+            return oneWhite;
+          case 2:
+            return twoWhite;
+          case 3:
+            return threeWhite;
+          case 4:
+            return fourWhite;
+          case 5:
+            return fiveWhite;
+          case 6:
+            return sixWhite;
+          case -1:
+            return oneBlack;
+          case -2:
+            return twoBlack;
+          case -3:
+            return threeBlack;
+          case -4:
+            return fourBlack;
+          case -5:
+            return fiveBlack;
+          case -6:
+            return sixBlack;
+        }
+      }
     }
   };
 
@@ -57,7 +74,7 @@ const Home = () => {
             };
             let content = null;
             if (color !== 0) {
-              content = <img className={styles.imgstyle} src={getImageSrc(color)?.src} />;
+              content = <img className={styles.imgstyle} src={getImageSrc(color, y, x)?.src} />;
             }
 
             return (
