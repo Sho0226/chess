@@ -22,13 +22,16 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 7, 0],
     [1, 1, 1, 1, 1, 1, 1, 1],
     [2, 3, 4, 5, 6, 4, 3, 2],
   ]);
 
   const newBoard = structuredClone(board);
-  const clickHandler = (x: number, y: number) => {};
+  const clickHandler = (x: number, y: number) => {
+    pawn(x, y);
+    setBoard(newBoard);
+  };
 
   const getImageSrc = (color: number) => {
     switch (color) {
@@ -56,8 +59,28 @@ const Home = () => {
         return fiveBlack;
       case -6:
         return sixBlack;
+      default:
+        return;
     }
   };
+
+  const pawn = (x: number, y: number) => {
+    if (board[y][x] === 1) {
+      newBoard[y - 2][x] = 7;
+    }
+  };
+
+  const chessmoves = (x: number, y: number) => {
+    if (board[y] !== undefined) {
+      if (board[y][x] !== undefined) {
+        if (board[y][x] === 2) {
+          newBoard[y][x] = 0;
+          newBoard[y - 2][x] = 1;
+        }
+      }
+    }
+  };
+  const cellSize = 80; // セルのサイズを定義
 
   return (
     <div className={styles.container}>
@@ -67,11 +90,12 @@ const Home = () => {
             const isEven = (y + x) % 2 === 0;
             const cellStyle = {
               backgroundColor: isEven ? '#f7c899' : '#ca8745',
+              width: `${cellSize}px`,
+              height: `${cellSize}px`,
             };
-            let content = null;
-            if (color !== 0) {
-              content = <img className={styles.imgstyle} src={getImageSrc(color)?.src} />;
-            }
+            const imageSrc = getImageSrc(color)?.src; // 画像ソースの取得
+            const content =
+              color !== 7 ? <img className={styles.imgstyle} src={imageSrc} alt="" /> : null; // 画像コンテンツ
 
             return (
               <div
@@ -80,6 +104,28 @@ const Home = () => {
                 key={`${x}-${y}`}
                 onClick={() => clickHandler(x, y)}
               >
+                {color === 7 ? (
+                  <div className={styles.spinnerBox} style={{ width: cellSize, height: cellSize }}>
+                    <div
+                      className={styles.configureBorder1}
+                      style={{ width: cellSize * 0.4, height: cellSize * 0.4 }}
+                    >
+                      <div
+                        className={`${styles.configure1}  ${styles.configure4}`}
+                        style={{ width: cellSize * 0.4, height: cellSize * 0.4 }}
+                      />
+                    </div>
+                    <div
+                      className={styles.configureBorder2}
+                      style={{ width: cellSize * 0.4, height: cellSize * 0.4 }}
+                    >
+                      <div
+                        className={`${styles.configure2}  ${styles.configure3}`}
+                        style={{ width: cellSize * 0.4, height: cellSize * 0.4 }}
+                      />
+                    </div>
+                  </div>
+                ) : null}
                 {content}
               </div>
             );
@@ -89,5 +135,4 @@ const Home = () => {
     </div>
   );
 };
-
 export default Home;
