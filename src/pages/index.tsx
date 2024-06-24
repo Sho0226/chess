@@ -84,7 +84,7 @@ const Home = () => {
             };
             let content = null;
             if (color !== 0) {
-              content = <img src={SampleImage.src} alt="1b.png" />;
+              content = <img className={styles.imgstyle} src={SampleImage.src} alt="1b.png" />;
             }
 
             return (
