@@ -22,14 +22,15 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 7, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 1, 1, 0],
     [2, 3, 4, 5, 6, 4, 3, 2],
   ]);
 
   const newBoard = structuredClone(board);
   const clickHandler = (x: number, y: number) => {
     pawn(x, y);
+    rook(x, y);
     setBoard(newBoard);
   };
 
@@ -65,21 +66,55 @@ const Home = () => {
   };
 
   const pawn = (x: number, y: number) => {
-    if (board[y][x] === 1) {
-      newBoard[y - 2][x] = 7;
-    }
-  };
-
-  const chessmoves = (x: number, y: number) => {
     if (board[y] !== undefined) {
       if (board[y][x] !== undefined) {
-        if (board[y][x] === 2) {
-          newBoard[y][x] = 0;
-          newBoard[y - 2][x] = 1;
+        if (board[y][x] === 1) {
+          newBoard[y - 2][x] = 7;
+          newBoard[y - 1][x] = 7;
         }
       }
     }
   };
+
+  const rook = (x: number, y: number) => {
+    for (let r = 1; r < 8; r++) {
+      if (board[y][x] === 2) {
+        // 縦方向のチェック
+        if (y + r < 8 && board[y + r] !== undefined) {
+          if (board[y + r][x] === 0 || board[y + r][x] === 7) {
+            newBoard[y + r][x] = 7;
+          }
+        }
+        if (y - r >= 0 && board[y - r] !== undefined) {
+          if (board[y - r][x] === 0 || board[y - r][x] === 7) {
+            newBoard[y - r][x] = 7;
+          }
+        }
+        // 横方向のチェック
+        if (x + r < 8 && board[y][x + r] !== undefined) {
+          if (board[y][x + r] === 0 || board[y][x + r] === 7) {
+            newBoard[y][x + r] = 7;
+          }
+        }
+        if (x - r >= 0 && board[y][x - r] !== undefined) {
+          if (board[y][x - r] === 0 || board[y][x - r] === 7) {
+            newBoard[y][x - r] = 7;
+          }
+        }
+      }
+    }
+  };
+
+  // const chessmoves = (x: number, y: number) => {
+  //   if (board[y] !== undefined) {
+  //     if (board[y][x] !== undefined) {
+  //       if (board[y][x] === 2) {
+  //         newBoard[y][x] = 0;
+  //         newBoard[y - 2][x] = 1;
+  //       }
+  //     }
+  //   }
+  // };
   const cellSize = 80; // セルのサイズを定義
 
   return (
