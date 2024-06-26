@@ -20,7 +20,7 @@ const Home = () => {
     [-2, -3, -4, -6, -5, -4, -3, -2],
     [-1, -1, -1, -1, -1, -1, -1, -1],
     [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 5, 0, 0, 0, 0],
+    [0, 0, 0, 6, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -30,10 +30,11 @@ const Home = () => {
   const newBoard = structuredClone(board);
   const clickHandler = (x: number, y: number) => {
     pawn(x, y);
-    rook(x, y);
+    rook(x, y, 2);
     knight(x, y);
-    bishop(x, y);
+    bishop(x, y, 4);
     king(x, y);
+    queen(x, y);
     setBoard(newBoard);
   };
 
@@ -79,9 +80,9 @@ const Home = () => {
     }
   };
 
-  const rook = (x: number, y: number) => {
+  const rook = (x: number, y: number, z: number) => {
     for (let r = 1; r < 8; r++) {
-      if (board[y][x] === 2) {
+      if (board[y][x] === z) {
         // 縦方向のチェック
         if (board[y + r] !== undefined) {
           if (board[y + r][x] === 0) {
@@ -130,9 +131,9 @@ const Home = () => {
     }
   };
 
-  const bishop = (x: number, y: number) => {
+  const bishop = (x: number, y: number, z: number) => {
     for (let b = 1; b < 8; b++) {
-      if (board[y][x] === 4) {
+      if (board[y][x] === z) {
         // 縦方向のチェック
         if (board[y + b] !== undefined && board[y + b][x + b] !== undefined) {
           if (board[y + b][x + b] === 0) {
@@ -184,6 +185,10 @@ const Home = () => {
     }
   };
 
+  const queen = (x: number, y: number) => {
+    rook(x, y, 6);
+    bishop(x, y, 6);
+  };
   // const chessmoves = (x: number, y: number) => {
   //   if (board[y] !== undefined) {
   //     if (board[y][x] !== undefined) {
