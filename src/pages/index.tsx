@@ -20,7 +20,7 @@ const Home = () => {
     [-2, -3, -4, -6, -5, -4, -3, -2],
     [-1, -1, -1, -1, -1, -1, -1, -1],
     [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 3, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -70,7 +70,7 @@ const Home = () => {
   const pawn = (x: number, y: number) => {
     if (board[y] !== undefined) {
       if (board[y][x] !== undefined) {
-        if (board[y][x] === 1) {
+        if (board[y][x] === 1 && board[y][x] === 0) {
           newBoard[y - 2][x] = 7;
           newBoard[y - 1][x] = 7;
         }
@@ -82,23 +82,23 @@ const Home = () => {
     for (let r = 1; r < 8; r++) {
       if (board[y][x] === 2) {
         // 縦方向のチェック
-        if (y + r < 8 && board[y + r] !== undefined) {
+        if (board[y + r] !== undefined) {
           if (board[y + r][x] === 0) {
             newBoard[y + r][x] = 7;
           }
         }
-        if (y - r >= 0 && board[y - r] !== undefined) {
+        if (board[y - r] !== undefined) {
           if (board[y - r][x] === 0) {
             newBoard[y - r][x] = 7;
           }
         }
         // 横方向のチェック
-        if (x + r < 8 && board[y][x + r] !== undefined) {
+        if (board[y][x + r] !== undefined) {
           if (board[y][x + r] === 0) {
             newBoard[y][x + r] = 7;
           }
         }
-        if (x - r >= 0 && board[y][x - r] !== undefined) {
+        if (board[y][x - r] !== undefined) {
           if (board[y][x - r] === 0) {
             newBoard[y][x - r] = 7;
           }
@@ -123,7 +123,7 @@ const Home = () => {
       const [y_k, x_k] = k_d;
       if (board[y + y_k] !== undefined) {
         if (board[y + y_k][x + x_k] !== undefined) {
-          if (board[y][x] === 3) {
+          if (board[y][x] === 3 && board[y + y_k][x + x_k] === 0) {
             newBoard[y + y_k][x + x_k] = 7;
           }
         }
@@ -135,45 +135,26 @@ const Home = () => {
     for (let b = 1; b < 8; b++) {
       if (board[y][x] === 4) {
         // 縦方向のチェック
-        if (
-          y + b < 8 &&
-          board[y + b] !== undefined &&
-          x + b < 8 &&
-          board[y + b][x + b] !== undefined
-        ) {
+        if (board[y + b] !== undefined && board[y + b][x + b] !== undefined) {
           if (board[y + b][x + b] === 0) {
             newBoard[y + b][x + b] = 7;
           }
         }
-        if (
-          y - b >= 0 &&
-          board[y - b] !== undefined &&
-          x - b >= 0 &&
-          board[y - b][x - b] !== undefined
-        ) {
+        if (board[y - b] !== undefined && board[y - b][x - b] !== undefined) {
           if (board[y - b][x - b] === 0) {
             newBoard[y - b][x - b] = 7;
           }
         }
         // 横方向のチェック
-        if (
-          y + b < 8 &&
-          board[y + b] !== undefined &&
-          x - b >= 0 &&
-          board[y + b][x - b] !== undefined
-        ) {
+        if (board[y + b] !== undefined && board[y + b][x - b] !== undefined) {
           if (board[y + b][x - b] === 0) {
             newBoard[y + b][x - b] = 7;
           }
-          if (
-            y - b >= 0 &&
-            board[y - b] !== undefined &&
-            x + b < 8 &&
-            board[y - b][x + b] !== undefined
-          ) {
-            if (board[y - b][x + b] === 0) {
-              newBoard[y - b][x + b] = 7;
-            }
+        }
+
+        if (board[y - b] !== undefined && board[y - b][x + b] !== undefined) {
+          if (board[y - b][x + b] === 0) {
+            newBoard[y - b][x + b] = 7;
           }
         }
       }
