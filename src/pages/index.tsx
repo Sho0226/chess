@@ -141,7 +141,7 @@ const Home = () => {
           x + b < 8 &&
           board[y + b][x + b] !== undefined
         ) {
-          if (board[y + b][x + b] === 0 || board[y + b][x + b] === 7) {
+          if (board[y + b][x + b] === 0) {
             newBoard[y + b][x + b] = 7;
           }
         }
@@ -151,7 +151,7 @@ const Home = () => {
           x - b >= 0 &&
           board[y - b][x - b] !== undefined
         ) {
-          if (board[y - b][x - b] === 0 || board[y - b][x - b] === 7) {
+          if (board[y - b][x - b] === 0) {
             newBoard[y - b][x - b] = 7;
           }
         }
@@ -162,7 +162,7 @@ const Home = () => {
           x - b >= 0 &&
           board[y + b][x - b] !== undefined
         ) {
-          if (board[y + b][x - b] === 0 || board[y + b][x - b] === 7) {
+          if (board[y + b][x - b] === 0) {
             newBoard[y + b][x - b] = 7;
           }
           if (
@@ -171,7 +171,7 @@ const Home = () => {
             x + b < 8 &&
             board[y - b][x + b] !== undefined
           ) {
-            if (board[y - b][x + b] === 0 || board[y - b][x + b] === 7) {
+            if (board[y - b][x + b] === 0) {
               newBoard[y - b][x + b] = 7;
             }
           }
