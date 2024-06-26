@@ -324,6 +324,10 @@ const Home = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.turnIndicator}>
+        {turn === 'white' ? "White's Turn" : "Black's Turn"}
+      </div>
+
       <div className={styles.boardstyle}>
         {board.map((row, y) =>
           row.map((color, x) => {
