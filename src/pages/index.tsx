@@ -389,7 +389,7 @@ const Home = () => {
                     style={{ position: 'absolute' as const }}
                   />
                 )}
-                {isCandidate && (
+                {isCandidate && piece === 0 && (
                   <div
                     className={`${styles.spinnerBox} ${board[y][x].isCapture ? styles.captureCandidate : ''}`}
                     style={{ width: cellSize, height: cellSize, position: 'absolute' as const }}
