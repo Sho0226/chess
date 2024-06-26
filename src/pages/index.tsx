@@ -53,10 +53,7 @@ const Home = () => {
     const currentTurn = turn === 'white' ? 1 : -1;
 
     if (selectedPiece) {
-      if (
-        (newBoard[y][x] === 7 || Math.sign(newBoard[y][x]) !== currentTurn) &&
-        selectedPieceValue !== null
-      ) {
+      if (newBoard[y][x] === 7 && selectedPieceValue !== null) {
         newBoard[selectedPiece.y][selectedPiece.x] = 0; // 元の位置を0にする
         newBoard[y][x] = selectedPieceValue; // 駒を新しい位置に移動
         setSelectedPiece(null); // 選択をリセット
