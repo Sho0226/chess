@@ -27,14 +27,26 @@ const Home = () => {
     [2, 3, 4, 5, 6, 4, 3, 2],
   ]);
 
-  const newBoard = structuredClone(board);
   const clickHandler = (x: number, y: number) => {
-    pawn(x, y);
-    rook(x, y, 2);
-    knight(x, y);
-    bishop(x, y, 4);
-    king(x, y);
-    queen(x, y);
+    const newBoard = structuredClone(board);
+
+    // すべての既存の7を0に置き換え
+    for (let row = 0; row < newBoard.length; row++) {
+      for (let col = 0; col < newBoard[row].length; col++) {
+        if (newBoard[row][col] === 7) {
+          newBoard[row][col] = 0;
+        }
+      }
+    }
+
+    // 新しい7を設定
+    pawn(x, y, newBoard);
+    rook(x, y, 2, newBoard);
+    knight(x, y, newBoard);
+    bishop(x, y, 4, newBoard);
+    king(x, y, newBoard);
+    queen(x, y, newBoard);
+
     setBoard(newBoard);
   };
 
@@ -69,41 +81,31 @@ const Home = () => {
     }
   };
 
-  const pawn = (x: number, y: number) => {
-    if (board[y] !== undefined) {
-      if (board[y][x] !== undefined) {
-        if (board[y][x] === 1 && board[y][x] === 0) {
-          newBoard[y - 2][x] = 7;
-          newBoard[y - 1][x] = 7;
-        }
+  const pawn = (x: number, y: number, board: number[][]) => {
+    if (board[y] !== undefined && board[y][x] !== undefined) {
+      if (board[y][x] === 1) {
+        if (board[y - 2] !== undefined) board[y - 2][x] = 7;
+        if (board[y - 1] !== undefined) board[y - 1][x] = 7;
       }
     }
   };
 
-  const rook = (x: number, y: number, z: number) => {
+  const rook = (x: number, y: number, z: number, board: number[][]) => {
     for (let r = 1; r < 8; r++) {
       if (board[y][x] === z) {
         // 縦方向のチェック
-        if (board[y + r] !== undefined) {
-          if (board[y + r][x] === 0) {
-            newBoard[y + r][x] = 7;
-          }
+        if (board[y + r] !== undefined && board[y + r][x] === 0) {
+          board[y + r][x] = 7;
         }
-        if (board[y - r] !== undefined) {
-          if (board[y - r][x] === 0) {
-            newBoard[y - r][x] = 7;
-          }
+        if (board[y - r] !== undefined && board[y - r][x] === 0) {
+          board[y - r][x] = 7;
         }
         // 横方向のチェック
-        if (board[y][x + r] !== undefined) {
-          if (board[y][x + r] === 0) {
-            newBoard[y][x + r] = 7;
-          }
+        if (board[y][x + r] !== undefined && board[y][x + r] === 0) {
+          board[y][x + r] = 7;
         }
-        if (board[y][x - r] !== undefined) {
-          if (board[y][x - r] === 0) {
-            newBoard[y][x - r] = 7;
-          }
+        if (board[y][x - r] !== undefined && board[y][x - r] === 0) {
+          board[y][x - r] = 7;
         }
       }
     }
@@ -120,42 +122,49 @@ const Home = () => {
     [-1, 2],
   ];
 
-  const knight = (x: number, y: number) => {
+  const knight = (x: number, y: number, board: number[][]) => {
     for (const k_d of knight_drection) {
       const [y_k, x_k] = k_d;
       if (board[y + y_k] !== undefined && board[y + y_k][x + x_k] !== undefined) {
         if (board[y][x] === 3 && board[y + y_k][x + x_k] === 0) {
-          newBoard[y + y_k][x + x_k] = 7;
+          board[y + y_k][x + x_k] = 7;
         }
       }
     }
   };
 
-  const bishop = (x: number, y: number, z: number) => {
+  const bishop = (x: number, y: number, z: number, board: number[][]) => {
     for (let b = 1; b < 8; b++) {
       if (board[y][x] === z) {
         // 縦方向のチェック
-        if (board[y + b] !== undefined && board[y + b][x + b] !== undefined) {
-          if (board[y + b][x + b] === 0) {
-            newBoard[y + b][x + b] = 7;
-          }
+        if (
+          board[y + b] !== undefined &&
+          board[y + b][x + b] !== undefined &&
+          board[y + b][x + b] === 0
+        ) {
+          board[y + b][x + b] = 7;
         }
-        if (board[y - b] !== undefined && board[y - b][x - b] !== undefined) {
-          if (board[y - b][x - b] === 0) {
-            newBoard[y - b][x - b] = 7;
-          }
+        if (
+          board[y - b] !== undefined &&
+          board[y - b][x - b] !== undefined &&
+          board[y - b][x - b] === 0
+        ) {
+          board[y - b][x - b] = 7;
         }
         // 横方向のチェック
-        if (board[y + b] !== undefined && board[y + b][x - b] !== undefined) {
-          if (board[y + b][x - b] === 0) {
-            newBoard[y + b][x - b] = 7;
-          }
+        if (
+          board[y + b] !== undefined &&
+          board[y + b][x - b] !== undefined &&
+          board[y + b][x - b] === 0
+        ) {
+          board[y + b][x - b] = 7;
         }
-
-        if (board[y - b] !== undefined && board[y - b][x + b] !== undefined) {
-          if (board[y - b][x + b] === 0) {
-            newBoard[y - b][x + b] = 7;
-          }
+        if (
+          board[y - b] !== undefined &&
+          board[y - b][x + b] !== undefined &&
+          board[y - b][x + b] === 0
+        ) {
+          board[y - b][x + b] = 7;
         }
       }
     }
@@ -172,33 +181,26 @@ const Home = () => {
     [0, 1],
   ];
 
-  const king = (x: number, y: number) => {
+  const king = (x: number, y: number, board: number[][]) => {
     if (board[y][x] === 5) {
       for (const kg_d of king_drection) {
         const [y_kg, x_kg] = kg_d;
-        if (board[y + y_kg] !== undefined && board[y + y_kg][x + x_kg] !== undefined) {
-          if (board[y + y_kg][x + x_kg] === 0) {
-            newBoard[y + y_kg][x + x_kg] = 7;
-          }
+        if (
+          board[y + y_kg] !== undefined &&
+          board[y + y_kg][x + x_kg] !== undefined &&
+          board[y + y_kg][x + x_kg] === 0
+        ) {
+          board[y + y_kg][x + x_kg] = 7;
         }
       }
     }
   };
 
-  const queen = (x: number, y: number) => {
-    rook(x, y, 6);
-    bishop(x, y, 6);
+  const queen = (x: number, y: number, board: number[][]) => {
+    rook(x, y, 6, board);
+    bishop(x, y, 6, board);
   };
-  // const chessmoves = (x: number, y: number) => {
-  //   if (board[y] !== undefined) {
-  //     if (board[y][x] !== undefined) {
-  //       if (board[y][x] === 2) {
-  //         newBoard[y][x] = 0;
-  //         newBoard[y - 2][x] = 1;
-  //       }
-  //     }
-  //   }
-  // };
+
   const cellSize = 80; // セルのサイズを定義
 
   return (
@@ -254,4 +256,5 @@ const Home = () => {
     </div>
   );
 };
+
 export default Home;
