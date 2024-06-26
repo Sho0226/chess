@@ -125,21 +125,43 @@ const Home = () => {
   };
 
   const rook = (x: number, y: number, z: number, board: number[][]) => {
-    for (let r = 1; r < 8; r++) {
-      if (board[y][x] === z) {
-        // 縦方向のチェック
-        if (board[y + r] !== undefined && board[y + r][x] === 0) {
-          board[y + r][x] = 7;
+    if (board[y][x] === z) {
+      // 縦方向のチェック
+      for (let r = 1; r < 8; r++) {
+        if (board[y + r] !== undefined) {
+          if (board[y + r][x] === 0) {
+            board[y + r][x] = 7;
+          } else {
+            break; // 途中に駒があれば貫通しない
+          }
         }
-        if (board[y - r] !== undefined && board[y - r][x] === 0) {
-          board[y - r][x] = 7;
+      }
+      for (let r = 1; r < 8; r++) {
+        if (board[y - r] !== undefined) {
+          if (board[y - r][x] === 0) {
+            board[y - r][x] = 7;
+          } else {
+            break; // 途中に駒があれば貫通しない
+          }
         }
-        // 横方向のチェック
-        if (board[y][x + r] !== undefined && board[y][x + r] === 0) {
-          board[y][x + r] = 7;
+      }
+      // 横方向のチェック
+      for (let r = 1; r < 8; r++) {
+        if (board[y][x + r] !== undefined) {
+          if (board[y][x + r] === 0) {
+            board[y][x + r] = 7;
+          } else {
+            break; // 途中に駒があれば貫通しない
+          }
         }
-        if (board[y][x - r] !== undefined && board[y][x - r] === 0) {
-          board[y][x - r] = 7;
+      }
+      for (let r = 1; r < 8; r++) {
+        if (board[y][x - r] !== undefined) {
+          if (board[y][x - r] === 0) {
+            board[y][x - r] = 7;
+          } else {
+            break; // 途中に駒があれば貫通しない
+          }
         }
       }
     }
@@ -168,37 +190,45 @@ const Home = () => {
   };
 
   const bishop = (x: number, y: number, z: number, board: number[][]) => {
-    for (let b = 1; b < 8; b++) {
-      if (board[y][x] === z) {
-        // 縦方向のチェック
-        if (
-          board[y + b] !== undefined &&
-          board[y + b][x + b] !== undefined &&
-          board[y + b][x + b] === 0
-        ) {
-          board[y + b][x + b] = 7;
+    if (board[y][x] === z) {
+      for (let b = 1; b < 8; b++) {
+        // 右下方向のチェック
+        if (board[y + b] !== undefined && board[y + b][x + b] !== undefined) {
+          if (board[y + b][x + b] === 0) {
+            board[y + b][x + b] = 7;
+          } else {
+            break; // 途中に駒があれば貫通しない
+          }
         }
-        if (
-          board[y - b] !== undefined &&
-          board[y - b][x - b] !== undefined &&
-          board[y - b][x - b] === 0
-        ) {
-          board[y - b][x - b] = 7;
+      }
+      for (let b = 1; b < 8; b++) {
+        // 左上方向のチェック
+        if (board[y - b] !== undefined && board[y - b][x - b] !== undefined) {
+          if (board[y - b][x - b] === 0) {
+            board[y - b][x - b] = 7;
+          } else {
+            break; // 途中に駒があれば貫通しない
+          }
         }
-        // 横方向のチェック
-        if (
-          board[y + b] !== undefined &&
-          board[y + b][x - b] !== undefined &&
-          board[y + b][x - b] === 0
-        ) {
-          board[y + b][x - b] = 7;
+      }
+      for (let b = 1; b < 8; b++) {
+        // 右上方向のチェック
+        if (board[y - b] !== undefined && board[y - b][x + b] !== undefined) {
+          if (board[y - b][x + b] === 0) {
+            board[y - b][x + b] = 7;
+          } else {
+            break; // 途中に駒があれば貫通しない
+          }
         }
-        if (
-          board[y - b] !== undefined &&
-          board[y - b][x + b] !== undefined &&
-          board[y - b][x + b] === 0
-        ) {
-          board[y - b][x + b] = 7;
+      }
+      for (let b = 1; b < 8; b++) {
+        // 左下方向のチェック
+        if (board[y + b] !== undefined && board[y + b][x - b] !== undefined) {
+          if (board[y + b][x - b] === 0) {
+            board[y + b][x - b] = 7;
+          } else {
+            break; // 途中に駒があれば貫通しない
+          }
         }
       }
     }
