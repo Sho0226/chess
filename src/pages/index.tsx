@@ -58,18 +58,17 @@ const Home = () => {
     for (const row of board) {
       for (const cell of row) {
         cell.isCandidate = false;
-        cell.isCapture = false; // isCapture もリセット
+        cell.isCapture = false;
       }
     }
   };
 
   const displayCandidateMoves = (x: number, y: number, board: BoardType) => {
     const piece = board[y][x].piece;
-    const z = board[y][x].z;
     if (piece === 1 || piece === -1) pawn(x, y, board, piece);
-    if (piece === 2 || piece === -2) rook(x, y, z, board);
+    if (piece === 2 || piece === -2) rook(x, y, board);
     if (piece === 3 || piece === -3) knight(x, y, board);
-    if (piece === 4 || piece === -4) bishop(x, y, z, board);
+    if (piece === 4 || piece === -4) bishop(x, y, board);
     if (piece === 5 || piece === -5) king(x, y, board);
     if (piece === 6 || piece === -6) queen(x, y, board);
   };
@@ -80,26 +79,20 @@ const Home = () => {
 
     if (selectedPiece) {
       if (newBoard[y][x].isCandidate && selectedPieceValue !== null) {
-        newBoard[selectedPiece.y][selectedPiece.x].piece = 0; // 元の位置を0にする
-        newBoard[y][x].piece = selectedPieceValue; // 駒を新しい位置に移動
-        setSelectedPiece(null); // 選択をリセット
-        setSelectedPieceValue(null); // 駒の値をリセット
+        newBoard[selectedPiece.y][selectedPiece.x].piece = 0;
+        newBoard[y][x].piece = selectedPieceValue;
+        setSelectedPiece(null);
+        setSelectedPieceValue(null);
 
-        // 移動後に残っている候補地を消す
         resetCandidateMoves(newBoard);
-
-        // ターンを交代
         setTurn(turn === 'white' ? 'black' : 'white');
       } else {
-        // 他の駒が選択された場合、選択状態を更新し候補地をリセット
         resetCandidateMoves(newBoard);
         setSelectedPiece({ x, y });
         setSelectedPieceValue(newBoard[y][x].piece);
-        // 新しい候補地を設定
         displayCandidateMoves(x, y, newBoard);
       }
     } else {
-      // 現在のターンの駒でなければ何もしない
       if (
         (currentTurn === 1 && newBoard[y][x].piece <= 0) ||
         (currentTurn === -1 && newBoard[y][x].piece >= 0)
@@ -107,13 +100,9 @@ const Home = () => {
         return;
       }
 
-      // すべての既存の候補地をリセット
       resetCandidateMoves(newBoard);
-
-      // 新しい候補地を設定
       displayCandidateMoves(x, y, newBoard);
 
-      // 駒が選択された状態を保存
       if (newBoard[y][x].piece !== 0) {
         setSelectedPiece({ x, y });
         setSelectedPieceValue(newBoard[y][x].piece);
@@ -150,7 +139,7 @@ const Home = () => {
       case -6:
         return sixBlack;
       default:
-        return null; // 画像が存在しない場合は null を返す
+        return null;
     }
   };
 
@@ -168,7 +157,7 @@ const Home = () => {
       board[y][x].piece !== 0
     ) {
       board[y][x].isCandidate = true;
-      board[y][x].isCapture = true; // 敵の駒を取れる場所を示す
+      board[y][x].isCapture = true;
     }
   };
 
@@ -190,16 +179,17 @@ const Home = () => {
     }
   };
 
-  const rook = (x: number, y: number, z: number, board: BoardType) => {
+  const rook = (x: number, y: number, board: BoardType) => {
     for (let r = 1; r < 8; r++) {
       if (board[y + r] !== undefined) {
         if (board[y + r][x].piece === 0) {
           board[y + r][x].isCandidate = true;
-        } else if (Math.sign(board[y + r][x].piece) !== Math.sign(z)) {
+        } else if (Math.sign(board[y + r][x].piece) !== Math.sign(board[y][x].piece)) {
           board[y + r][x].isCandidate = true;
-          break; // 敵の駒があればそこまで
+          board[y + r][x].isCapture = true;
+          break;
         } else {
-          break; // 味方の駒があれば貫通しない
+          break;
         }
       }
     }
@@ -207,11 +197,12 @@ const Home = () => {
       if (board[y - r] !== undefined) {
         if (board[y - r][x].piece === 0) {
           board[y - r][x].isCandidate = true;
-        } else if (Math.sign(board[y - r][x].piece) !== Math.sign(z)) {
+        } else if (Math.sign(board[y - r][x].piece) !== Math.sign(board[y][x].piece)) {
           board[y - r][x].isCandidate = true;
-          break; // 敵の駒があればそこまで
+          board[y - r][x].isCapture = true;
+          break;
         } else {
-          break; // 味方の駒があれば貫通しない
+          break;
         }
       }
     }
@@ -219,11 +210,12 @@ const Home = () => {
       if (board[y][x + r] !== undefined) {
         if (board[y][x + r].piece === 0) {
           board[y][x + r].isCandidate = true;
-        } else if (Math.sign(board[y][x + r].piece) !== Math.sign(z)) {
+        } else if (Math.sign(board[y][x + r].piece) !== Math.sign(board[y][x].piece)) {
           board[y][x + r].isCandidate = true;
-          break; // 敵の駒があればそこまで
+          board[y][x + r].isCapture = true;
+          break;
         } else {
-          break; // 味方の駒があれば貫通しない
+          break;
         }
       }
     }
@@ -231,11 +223,12 @@ const Home = () => {
       if (board[y][x - r] !== undefined) {
         if (board[y][x - r].piece === 0) {
           board[y][x - r].isCandidate = true;
-        } else if (Math.sign(board[y][x - r].piece) !== Math.sign(z)) {
+        } else if (Math.sign(board[y][x - r].piece) !== Math.sign(board[y][x].piece)) {
           board[y][x - r].isCandidate = true;
-          break; // 敵の駒があればそこまで
+          board[y][x - r].isCapture = true;
+          break;
         } else {
-          break; // 味方の駒があれば貫通しない
+          break;
         }
       }
     }
@@ -262,61 +255,64 @@ const Home = () => {
             Math.sign(board[y + y_k][x + x_k].piece) !== Math.sign(board[y][x].piece))
         ) {
           board[y + y_k][x + x_k].isCandidate = true;
+          if (board[y + y_k][x + x_k].piece !== 0) {
+            board[y + y_k][x + x_k].isCapture = true;
+          }
         }
       }
     }
   };
 
-  const bishop = (x: number, y: number, z: number, board: BoardType) => {
+  const bishop = (x: number, y: number, board: BoardType) => {
     for (let b = 1; b < 8; b++) {
-      // 右下方向のチェック
       if (board[y + b] !== undefined && board[y + b][x + b] !== undefined) {
         if (board[y + b][x + b].piece === 0) {
           board[y + b][x + b].isCandidate = true;
-        } else if (Math.sign(board[y + b][x + b].piece) !== Math.sign(z)) {
+        } else if (Math.sign(board[y + b][x + b].piece) !== Math.sign(board[y][x].piece)) {
           board[y + b][x + b].isCandidate = true;
-          break; // 敵の駒があればそこまで
+          board[y + b][x + b].isCapture = true;
+          break;
         } else {
-          break; // 味方の駒があれば貫通しない
+          break;
         }
       }
     }
     for (let b = 1; b < 8; b++) {
-      // 左上方向のチェック
       if (board[y - b] !== undefined && board[y - b][x - b] !== undefined) {
         if (board[y - b][x - b].piece === 0) {
           board[y - b][x - b].isCandidate = true;
-        } else if (Math.sign(board[y - b][x - b].piece) !== Math.sign(z)) {
+        } else if (Math.sign(board[y - b][x - b].piece) !== Math.sign(board[y][x].piece)) {
           board[y - b][x - b].isCandidate = true;
-          break; // 敵の駒があればそこまで
+          board[y - b][x - b].isCapture = true;
+          break;
         } else {
-          break; // 味方の駒があれば貫通しない
+          break;
         }
       }
     }
     for (let b = 1; b < 8; b++) {
-      // 右上方向のチェック
       if (board[y - b] !== undefined && board[y - b][x + b] !== undefined) {
         if (board[y - b][x + b].piece === 0) {
           board[y - b][x + b].isCandidate = true;
-        } else if (Math.sign(board[y - b][x + b].piece) !== Math.sign(z)) {
+        } else if (Math.sign(board[y - b][x + b].piece) !== Math.sign(board[y][x].piece)) {
           board[y - b][x + b].isCandidate = true;
-          break; // 敵の駒があればそこまで
+          board[y - b][x + b].isCapture = true;
+          break;
         } else {
-          break; // 味方の駒があれば貫通しない
+          break;
         }
       }
     }
     for (let b = 1; b < 8; b++) {
-      // 左下方向のチェック
       if (board[y + b] !== undefined && board[y + b][x - b] !== undefined) {
         if (board[y + b][x - b].piece === 0) {
           board[y + b][x - b].isCandidate = true;
-        } else if (Math.sign(board[y + b][x - b].piece) !== Math.sign(z)) {
+        } else if (Math.sign(board[y + b][x - b].piece) !== Math.sign(board[y][x].piece)) {
           board[y + b][x - b].isCandidate = true;
-          break; // 敵の駒があればそこまで
+          board[y + b][x - b].isCapture = true;
+          break;
         } else {
-          break; // 味方の駒があれば貫通しない
+          break;
         }
       }
     }
@@ -343,18 +339,19 @@ const Home = () => {
           Math.sign(board[y + y_kg][x + x_kg].piece) !== Math.sign(board[y][x].piece))
       ) {
         board[y + y_kg][x + x_kg].isCandidate = true;
+        if (board[y + y_kg][x + x_kg].piece !== 0) {
+          board[y + y_kg][x + x_kg].isCapture = true;
+        }
       }
     }
   };
 
   const queen = (x: number, y: number, board: BoardType) => {
-    rook(x, y, 6, board);
-    rook(x, y, -6, board);
-    bishop(x, y, 6, board);
-    bishop(x, y, -6, board);
+    rook(x, y, board);
+    bishop(x, y, board);
   };
 
-  const cellSize = 80; // セルのサイズを定義
+  const cellSize = 80;
 
   return (
     <div className={styles.container}>
@@ -364,13 +361,13 @@ const Home = () => {
 
       <div className={styles.boardstyle}>
         {board.map((row, y) =>
-          row.map(({ piece, isCandidate }, x) => {
+          row.map(({ piece, isCandidate, isCapture }, x) => {
             const isEven = (y + x) % 2 === 0;
             const cellStyle = {
               backgroundColor: isEven ? '#f7c899' : '#ca8745',
               width: `${cellSize / 6.4}%`,
               height: `${cellSize / 6.4}%`,
-              position: 'relative' as const, // 型キャストを追加
+              position: 'relative' as const,
             };
             const imageSrc = getImageSrc(piece)?.src;
 
@@ -389,9 +386,9 @@ const Home = () => {
                     style={{ position: 'absolute' as const }}
                   />
                 )}
-                {isCandidate && piece === 0 && (
+                {isCandidate && (
                   <div
-                    className={`${styles.spinnerBox} ${board[y][x].isCapture ? styles.captureCandidate : ''}`}
+                    className={`${styles.spinnerBox} ${isCapture ? styles.captureCandidate : ''}`}
                     style={{ width: cellSize, height: cellSize, position: 'absolute' as const }}
                   >
                     <div
