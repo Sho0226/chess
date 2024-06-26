@@ -55,6 +55,7 @@ const Home = () => {
   const [board, setBoard] = useState<BoardType>(initializeBoard);
   const [isCheck, setIsCheck] = useState<boolean>(false);
   const [isCheckmate, setIsCheckmate] = useState<boolean>(false);
+  const [gameOver, setGameOver] = useState<boolean>(false);
 
   const isKingInCheck = (board: BoardType, color: 'white' | 'black'): boolean => {
     let kingPosition: { x: number; y: number } | null = null;
@@ -129,6 +130,8 @@ const Home = () => {
   };
 
   const clickHandler = (x: number, y: number) => {
+    if (gameOver) return; // ゲームオーバー時は操作を受け付けない
+
     const newBoard = structuredClone(board);
     const currentTurn = turn === 'white' ? 1 : -1;
 
@@ -144,6 +147,7 @@ const Home = () => {
         if (newIsCheck) {
           const newIsCheckmate = Checkmate(newBoard, oppositeColor);
           setIsCheckmate(newIsCheckmate);
+          if (newIsCheckmate) setGameOver(true); // チェックメイトの場合ゲームオーバーにする
         } else {
           setIsCheckmate(false);
         }
@@ -177,6 +181,17 @@ const Home = () => {
 
     setBoard(newBoard);
   };
+
+  const resetGame = () => {
+    setBoard(initializeBoard());
+    setTurn('white');
+    setSelectedPiece(null);
+    setSelectedPieceValue(null);
+    setIsCheck(false);
+    setIsCheckmate(false);
+    setGameOver(false);
+  };
+
   const getImageSrc = (piece: number) => {
     switch (piece) {
       case 1:
@@ -424,7 +439,12 @@ const Home = () => {
         {turn === 'white' ? "White's Turn" : "Black's Turn"}
         {isCheck && <span> - Check!</span>}
         {isCheckmate && <span> - Checkmate!</span>}
+        {gameOver && <span> - Game Over</span>}
       </div>
+
+      <button onClick={resetGame} className={styles.resetButton}>
+        Reset Game
+      </button>
 
       <div className={styles.boardstyle}>
         {board.map((row, y) =>

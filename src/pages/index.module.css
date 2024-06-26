@@ -143,3 +143,15 @@
     transform: scale(1.05);
   }
 }
+
+.resetButton {
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+.resetButton:hover {
+  background-color: rgb(255 0 0 / 80%);
+}
