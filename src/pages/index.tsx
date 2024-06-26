@@ -377,7 +377,7 @@ const Home = () => {
                 key={`${x}-${y}`}
                 onClick={() => clickHandler(x, y)}
               >
-                {imageSrc && (
+                {imageSrc !== undefined && (
                   <img
                     className={styles.imgstyle}
                     src={imageSrc}
