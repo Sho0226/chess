@@ -28,6 +28,25 @@ const Home = () => {
     [2, 3, 4, 5, 6, 4, 3, 2],
   ]);
 
+  const resetCandidateMoves = (board: number[][]) => {
+    for (let row = 0; row < board.length; row++) {
+      for (let col = 0; col < board[row].length; col++) {
+        if (board[row][col] === 7) {
+          board[row][col] = 0;
+        }
+      }
+    }
+  };
+
+  const displayCandidateMoves = (x: number, y: number, board: number[][]) => {
+    pawn(x, y, board);
+    rook(x, y, 2, board);
+    knight(x, y, board);
+    bishop(x, y, 4, board);
+    king(x, y, board);
+    queen(x, y, board);
+  };
+
   const clickHandler = (x: number, y: number) => {
     const newBoard = structuredClone(board);
 
@@ -39,31 +58,21 @@ const Home = () => {
         setSelectedPieceValue(null); // 駒の値をリセット
 
         // 移動後に残っている7を消す
-        for (let row = 0; row < newBoard.length; row++) {
-          for (let col = 0; col < newBoard[row].length; col++) {
-            if (newBoard[row][col] === 7) {
-              newBoard[row][col] = 0;
-            }
-          }
-        }
+        resetCandidateMoves(newBoard);
+      } else {
+        // 他の駒が選択された場合、選択状態を更新し候補地をリセット
+        resetCandidateMoves(newBoard);
+        setSelectedPiece({ x, y });
+        setSelectedPieceValue(newBoard[y][x]);
+        // 新しい候補地を設定
+        displayCandidateMoves(x, y, newBoard);
       }
     } else {
       // すべての既存の7を0に置き換え
-      for (let row = 0; row < newBoard.length; row++) {
-        for (let col = 0; col < newBoard[row].length; col++) {
-          if (newBoard[row][col] === 7) {
-            newBoard[row][col] = 0;
-          }
-        }
-      }
+      resetCandidateMoves(newBoard);
 
       // 新しい7を設定
-      pawn(x, y, newBoard);
-      rook(x, y, 2, newBoard);
-      knight(x, y, newBoard);
-      bishop(x, y, 4, newBoard);
-      king(x, y, newBoard);
-      queen(x, y, newBoard);
+      displayCandidateMoves(x, y, newBoard);
 
       // 駒が選択された状態を保存
       if (newBoard[y][x] !== 0) {
