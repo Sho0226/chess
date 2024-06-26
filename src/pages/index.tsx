@@ -14,7 +14,7 @@ import sixBlack from '../assets/images/6b.png';
 import sixWhite from '../assets/images/6w.png';
 
 const Home = () => {
-  const [turn, setTurn] = useState(1);
+  const [turn, setTurn] = useState<'white' | 'black'>('white');
   const [selectedPiece, setSelectedPiece] = useState<{ x: number; y: number } | null>(null);
   const [selectedPieceValue, setSelectedPieceValue] = useState<number | null>(null);
   const [board, setBoard] = useState([
@@ -39,19 +39,24 @@ const Home = () => {
   };
 
   const displayCandidateMoves = (x: number, y: number, board: number[][]) => {
-    pawn(x, y, board);
-    rook(x, y, 2, board);
-    knight(x, y, board);
-    bishop(x, y, 4, board);
-    king(x, y, board);
-    queen(x, y, board);
+    const piece = board[y][x];
+    if (piece === 1 || piece === -1) pawn(x, y, board, piece);
+    if (piece === 2 || piece === -2) rook(x, y, piece, board);
+    if (piece === 3 || piece === -3) knight(x, y, board);
+    if (piece === 4 || piece === -4) bishop(x, y, piece, board);
+    if (piece === 5 || piece === -5) king(x, y, board);
+    if (piece === 6 || piece === -6) queen(x, y, board);
   };
 
   const clickHandler = (x: number, y: number) => {
     const newBoard = structuredClone(board);
+    const currentTurn = turn === 'white' ? 1 : -1;
 
     if (selectedPiece) {
-      if (newBoard[y][x] === 7 && selectedPieceValue !== null) {
+      if (
+        (newBoard[y][x] === 7 || Math.sign(newBoard[y][x]) !== currentTurn) &&
+        selectedPieceValue !== null
+      ) {
         newBoard[selectedPiece.y][selectedPiece.x] = 0; // 元の位置を0にする
         newBoard[y][x] = selectedPieceValue; // 駒を新しい位置に移動
         setSelectedPiece(null); // 選択をリセット
@@ -59,6 +64,9 @@ const Home = () => {
 
         // 移動後に残っている7を消す
         resetCandidateMoves(newBoard);
+
+        // ターンを交代
+        setTurn(turn === 'white' ? 'black' : 'white');
       } else {
         // 他の駒が選択された場合、選択状態を更新し候補地をリセット
         resetCandidateMoves(newBoard);
@@ -68,6 +76,14 @@ const Home = () => {
         displayCandidateMoves(x, y, newBoard);
       }
     } else {
+      // 現在のターンの駒でなければ何もしない
+      if (
+        (currentTurn === 1 && newBoard[y][x] <= 0) ||
+        (currentTurn === -1 && newBoard[y][x] >= 0)
+      ) {
+        return;
+      }
+
       // すべての既存の7を0に置き換え
       resetCandidateMoves(newBoard);
 
@@ -115,11 +131,22 @@ const Home = () => {
     }
   };
 
-  const pawn = (x: number, y: number, board: number[][]) => {
+  const pawn = (x: number, y: number, board: number[][], piece: number) => {
     if (board[y] !== undefined && board[y][x] !== undefined) {
-      if (board[y][x] === 1) {
-        if (board[y - 2] !== undefined && board[y - 2][x] === 0) board[y - 2][x] = 7;
-        if (board[y - 1] !== undefined && board[y - 1][x] === 0) board[y - 1][x] = 7;
+      if (piece === 1) {
+        if (board[y - 1] !== undefined) {
+          if (board[y - 1][x] === 0) board[y - 1][x] = 7;
+          if (board[y - 1][x - 1] !== undefined && board[y - 1][x - 1] < 0) board[y - 1][x - 1] = 7;
+          if (board[y - 1][x + 1] !== undefined && board[y - 1][x + 1] < 0) board[y - 1][x + 1] = 7;
+        }
+        if (y === 6 && board[y - 2] !== undefined && board[y - 2][x] === 0) board[y - 2][x] = 7;
+      } else if (piece === -1) {
+        if (board[y + 1] !== undefined) {
+          if (board[y + 1][x] === 0) board[y + 1][x] = 7;
+          if (board[y + 1][x - 1] !== undefined && board[y + 1][x - 1] > 0) board[y + 1][x - 1] = 7;
+          if (board[y + 1][x + 1] !== undefined && board[y + 1][x + 1] > 0) board[y + 1][x + 1] = 7;
+        }
+        if (y === 1 && board[y + 2] !== undefined && board[y + 2][x] === 0) board[y + 2][x] = 7;
       }
     }
   };
@@ -131,8 +158,11 @@ const Home = () => {
         if (board[y + r] !== undefined) {
           if (board[y + r][x] === 0) {
             board[y + r][x] = 7;
+          } else if (Math.sign(board[y + r][x]) !== Math.sign(z)) {
+            board[y + r][x] = 7;
+            break; // 敵の駒があればそこまで
           } else {
-            break; // 途中に駒があれば貫通しない
+            break; // 味方の駒があれば貫通しない
           }
         }
       }
@@ -140,8 +170,11 @@ const Home = () => {
         if (board[y - r] !== undefined) {
           if (board[y - r][x] === 0) {
             board[y - r][x] = 7;
+          } else if (Math.sign(board[y - r][x]) !== Math.sign(z)) {
+            board[y - r][x] = 7;
+            break; // 敵の駒があればそこまで
           } else {
-            break; // 途中に駒があれば貫通しない
+            break; // 味方の駒があれば貫通しない
           }
         }
       }
@@ -150,8 +183,11 @@ const Home = () => {
         if (board[y][x + r] !== undefined) {
           if (board[y][x + r] === 0) {
             board[y][x + r] = 7;
+          } else if (Math.sign(board[y][x + r]) !== Math.sign(z)) {
+            board[y][x + r] = 7;
+            break; // 敵の駒があればそこまで
           } else {
-            break; // 途中に駒があれば貫通しない
+            break; // 味方の駒があれば貫通しない
           }
         }
       }
@@ -159,8 +195,11 @@ const Home = () => {
         if (board[y][x - r] !== undefined) {
           if (board[y][x - r] === 0) {
             board[y][x - r] = 7;
+          } else if (Math.sign(board[y][x - r]) !== Math.sign(z)) {
+            board[y][x - r] = 7;
+            break; // 敵の駒があればそこまで
           } else {
-            break; // 途中に駒があれば貫通しない
+            break; // 味方の駒があれば貫通しない
           }
         }
       }
@@ -182,7 +221,11 @@ const Home = () => {
     for (const k_d of knight_drection) {
       const [y_k, x_k] = k_d;
       if (board[y + y_k] !== undefined && board[y + y_k][x + x_k] !== undefined) {
-        if (board[y][x] === 3 && board[y + y_k][x + x_k] === 0) {
+        if (
+          (board[y][x] === 3 || board[y][x] === -3) &&
+          (board[y + y_k][x + x_k] === 0 ||
+            Math.sign(board[y + y_k][x + x_k]) !== Math.sign(board[y][x]))
+        ) {
           board[y + y_k][x + x_k] = 7;
         }
       }
@@ -196,8 +239,11 @@ const Home = () => {
         if (board[y + b] !== undefined && board[y + b][x + b] !== undefined) {
           if (board[y + b][x + b] === 0) {
             board[y + b][x + b] = 7;
+          } else if (Math.sign(board[y + b][x + b]) !== Math.sign(z)) {
+            board[y + b][x + b] = 7;
+            break; // 敵の駒があればそこまで
           } else {
-            break; // 途中に駒があれば貫通しない
+            break; // 味方の駒があれば貫通しない
           }
         }
       }
@@ -206,8 +252,11 @@ const Home = () => {
         if (board[y - b] !== undefined && board[y - b][x - b] !== undefined) {
           if (board[y - b][x - b] === 0) {
             board[y - b][x - b] = 7;
+          } else if (Math.sign(board[y - b][x - b]) !== Math.sign(z)) {
+            board[y - b][x - b] = 7;
+            break; // 敵の駒があればそこまで
           } else {
-            break; // 途中に駒があれば貫通しない
+            break; // 味方の駒があれば貫通しない
           }
         }
       }
@@ -216,8 +265,11 @@ const Home = () => {
         if (board[y - b] !== undefined && board[y - b][x + b] !== undefined) {
           if (board[y - b][x + b] === 0) {
             board[y - b][x + b] = 7;
+          } else if (Math.sign(board[y - b][x + b]) !== Math.sign(z)) {
+            board[y - b][x + b] = 7;
+            break; // 敵の駒があればそこまで
           } else {
-            break; // 途中に駒があれば貫通しない
+            break; // 味方の駒があれば貫通しない
           }
         }
       }
@@ -226,8 +278,11 @@ const Home = () => {
         if (board[y + b] !== undefined && board[y + b][x - b] !== undefined) {
           if (board[y + b][x - b] === 0) {
             board[y + b][x - b] = 7;
+          } else if (Math.sign(board[y + b][x - b]) !== Math.sign(z)) {
+            board[y + b][x - b] = 7;
+            break; // 敵の駒があればそこまで
           } else {
-            break; // 途中に駒があれば貫通しない
+            break; // 味方の駒があれば貫通しない
           }
         }
       }
@@ -246,13 +301,14 @@ const Home = () => {
   ];
 
   const king = (x: number, y: number, board: number[][]) => {
-    if (board[y][x] === 5) {
+    if (board[y][x] === 5 || board[y][x] === -5) {
       for (const kg_d of king_drection) {
         const [y_kg, x_kg] = kg_d;
         if (
           board[y + y_kg] !== undefined &&
           board[y + y_kg][x + x_kg] !== undefined &&
-          board[y + y_kg][x + x_kg] === 0
+          (board[y + y_kg][x + x_kg] === 0 ||
+            Math.sign(board[y + y_kg][x + x_kg]) !== Math.sign(board[y][x]))
         ) {
           board[y + y_kg][x + x_kg] = 7;
         }
@@ -262,7 +318,9 @@ const Home = () => {
 
   const queen = (x: number, y: number, board: number[][]) => {
     rook(x, y, 6, board);
+    rook(x, y, -6, board);
     bishop(x, y, 6, board);
+    bishop(x, y, -6, board);
   };
 
   const cellSize = 80; // セルのサイズを定義
