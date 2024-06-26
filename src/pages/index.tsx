@@ -15,7 +15,8 @@ import sixWhite from '../assets/images/6w.png';
 
 const Home = () => {
   const [turn, setTurn] = useState(1);
-  const [chess, setChess] = useState();
+  const [selectedPiece, setSelectedPiece] = useState<{ x: number; y: number } | null>(null);
+  const [selectedPieceValue, setSelectedPieceValue] = useState<number | null>(null);
   const [board, setBoard] = useState([
     [-2, -3, -4, -6, -5, -4, -3, -2],
     [-1, -1, -1, -1, -1, -1, -1, -1],
@@ -30,22 +31,46 @@ const Home = () => {
   const clickHandler = (x: number, y: number) => {
     const newBoard = structuredClone(board);
 
-    // すべての既存の7を0に置き換え
-    for (let row = 0; row < newBoard.length; row++) {
-      for (let col = 0; col < newBoard[row].length; col++) {
-        if (newBoard[row][col] === 7) {
-          newBoard[row][col] = 0;
+    if (selectedPiece) {
+      if (newBoard[y][x] === 7 && selectedPieceValue !== null) {
+        newBoard[selectedPiece.y][selectedPiece.x] = 0; // 元の位置を0にする
+        newBoard[y][x] = selectedPieceValue; // 駒を新しい位置に移動
+        setSelectedPiece(null); // 選択をリセット
+        setSelectedPieceValue(null); // 駒の値をリセット
+
+        // 移動後に残っている7を消す
+        for (let row = 0; row < newBoard.length; row++) {
+          for (let col = 0; col < newBoard[row].length; col++) {
+            if (newBoard[row][col] === 7) {
+              newBoard[row][col] = 0;
+            }
+          }
         }
       }
-    }
+    } else {
+      // すべての既存の7を0に置き換え
+      for (let row = 0; row < newBoard.length; row++) {
+        for (let col = 0; col < newBoard[row].length; col++) {
+          if (newBoard[row][col] === 7) {
+            newBoard[row][col] = 0;
+          }
+        }
+      }
 
-    // 新しい7を設定
-    pawn(x, y, newBoard);
-    rook(x, y, 2, newBoard);
-    knight(x, y, newBoard);
-    bishop(x, y, 4, newBoard);
-    king(x, y, newBoard);
-    queen(x, y, newBoard);
+      // 新しい7を設定
+      pawn(x, y, newBoard);
+      rook(x, y, 2, newBoard);
+      knight(x, y, newBoard);
+      bishop(x, y, 4, newBoard);
+      king(x, y, newBoard);
+      queen(x, y, newBoard);
+
+      // 駒が選択された状態を保存
+      if (newBoard[y][x] !== 0) {
+        setSelectedPiece({ x, y });
+        setSelectedPieceValue(newBoard[y][x]);
+      }
+    }
 
     setBoard(newBoard);
   };
@@ -77,7 +102,7 @@ const Home = () => {
       case -6:
         return sixBlack;
       default:
-        return;
+        return null; // 画像が存在しない場合は null を返す
     }
   };
 
@@ -214,9 +239,11 @@ const Home = () => {
               width: `${cellSize / 6.4}%`,
               height: `${cellSize / 6.4}%`,
             };
-            const imageSrc = getImageSrc(color)?.src; // 画像ソースの取得
+            const imageSrc = getImageSrc(color)?.src;
             const content =
-              color !== 7 ? <img className={styles.imgstyle} src={imageSrc} alt="" /> : null; // 画像コンテンツ
+              color !== 7 && imageSrc !== undefined ? (
+                <img className={styles.imgstyle} src={imageSrc} alt="" />
+              ) : null;
 
             return (
               <div
