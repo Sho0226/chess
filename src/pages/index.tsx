@@ -20,7 +20,7 @@ const Home = () => {
     [-2, -3, -4, -6, -5, -4, -3, -2],
     [-1, -1, -1, -1, -1, -1, -1, -1],
     [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 3, 0, 0, 0, 0],
+    [0, 0, 0, 5, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -33,6 +33,7 @@ const Home = () => {
     rook(x, y);
     knight(x, y);
     bishop(x, y);
+    king(x, y);
     setBoard(newBoard);
   };
 
@@ -121,11 +122,9 @@ const Home = () => {
   const knight = (x: number, y: number) => {
     for (const k_d of knight_drection) {
       const [y_k, x_k] = k_d;
-      if (board[y + y_k] !== undefined) {
-        if (board[y + y_k][x + x_k] !== undefined) {
-          if (board[y][x] === 3 && board[y + y_k][x + x_k] === 0) {
-            newBoard[y + y_k][x + x_k] = 7;
-          }
+      if (board[y + y_k] !== undefined && board[y + y_k][x + x_k] !== undefined) {
+        if (board[y][x] === 3 && board[y + y_k][x + x_k] === 0) {
+          newBoard[y + y_k][x + x_k] = 7;
         }
       }
     }
@@ -155,6 +154,30 @@ const Home = () => {
         if (board[y - b] !== undefined && board[y - b][x + b] !== undefined) {
           if (board[y - b][x + b] === 0) {
             newBoard[y - b][x + b] = 7;
+          }
+        }
+      }
+    }
+  };
+
+  const king_drection = [
+    [1, 1],
+    [1, -1],
+    [0, -1],
+    [1, 0],
+    [-1, 0],
+    [-1, 1],
+    [-1, -1],
+    [0, 1],
+  ];
+
+  const king = (x: number, y: number) => {
+    if (board[y][x] === 5) {
+      for (const kg_d of king_drection) {
+        const [y_kg, x_kg] = kg_d;
+        if (board[y + y_kg] !== undefined && board[y + y_kg][x + x_kg] !== undefined) {
+          if (board[y + y_kg][x + x_kg] === 0) {
+            newBoard[y + y_kg][x + x_kg] = 7;
           }
         }
       }
