@@ -53,6 +53,61 @@ const Home = () => {
   const [selectedPiece, setSelectedPiece] = useState<{ x: number; y: number } | null>(null);
   const [selectedPieceValue, setSelectedPieceValue] = useState<number | null>(null);
   const [board, setBoard] = useState<BoardType>(initializeBoard);
+  const [isCheck, setIsCheck] = useState<boolean>(false);
+  const [isCheckmate, setIsCheckmate] = useState<boolean>(false);
+
+  const isKingInCheck = (board: BoardType, color: 'white' | 'black'): boolean => {
+    let kingPosition: { x: number; y: number } | null = null;
+    for (let y = 0; y < 8; y++) {
+      for (let x = 0; x < 8; x++) {
+        if (board[y][x].piece === (color === 'white' ? 5 : -5)) {
+          kingPosition = { x, y };
+          break;
+        }
+      }
+      if (kingPosition) break;
+    }
+
+    if (!kingPosition) return false;
+
+    for (let y = 0; y < 8; y++) {
+      for (let x = 0; x < 8; x++) {
+        if (Math.sign(board[y][x].piece) === (color === 'white' ? -1 : 1)) {
+          const tempBoard = structuredClone(board);
+          displayCandidateMoves(x, y, tempBoard);
+          if (tempBoard[kingPosition.y][kingPosition.x].isCandidate) {
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
+  };
+
+  const Checkmate = (board: BoardType, color: 'white' | 'black'): boolean => {
+    for (let y = 0; y < 8; y++) {
+      for (let x = 0; x < 8; x++) {
+        if (Math.sign(board[y][x].piece) === (color === 'white' ? 1 : -1)) {
+          const tempBoard = structuredClone(board);
+          displayCandidateMoves(x, y, tempBoard);
+          for (let ny = 0; ny < 8; ny++) {
+            for (let nx = 0; nx < 8; nx++) {
+              if (tempBoard[ny][nx].isCandidate) {
+                const moveBoard = structuredClone(board);
+                moveBoard[ny][nx].piece = moveBoard[y][x].piece;
+                moveBoard[y][x].piece = 0;
+                if (!isKingInCheck(moveBoard, color)) {
+                  return false;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return true;
+  };
 
   const resetCandidateMoves = (board: BoardType) => {
     for (const row of board) {
@@ -81,9 +136,20 @@ const Home = () => {
       if (newBoard[y][x].isCandidate && selectedPieceValue !== null) {
         newBoard[selectedPiece.y][selectedPiece.x].piece = 0;
         newBoard[y][x].piece = selectedPieceValue;
+
+        const oppositeColor = turn === 'white' ? 'black' : 'white';
+        const newIsCheck = isKingInCheck(newBoard, oppositeColor);
+        setIsCheck(newIsCheck);
+
+        if (newIsCheck) {
+          const newIsCheckmate = Checkmate(newBoard, oppositeColor);
+          setIsCheckmate(newIsCheckmate);
+        } else {
+          setIsCheckmate(false);
+        }
+
         setSelectedPiece(null);
         setSelectedPieceValue(null);
-
         resetCandidateMoves(newBoard);
         setTurn(turn === 'white' ? 'black' : 'white');
       } else {
@@ -111,7 +177,6 @@ const Home = () => {
 
     setBoard(newBoard);
   };
-
   const getImageSrc = (piece: number) => {
     switch (piece) {
       case 1:
@@ -357,6 +422,8 @@ const Home = () => {
     <div className={styles.container}>
       <div className={styles.turnIndicator}>
         {turn === 'white' ? "White's Turn" : "Black's Turn"}
+        {isCheck && <span> - Check!</span>}
+        {isCheckmate && <span> - Checkmate!</span>}
       </div>
 
       <div className={styles.boardstyle}>
