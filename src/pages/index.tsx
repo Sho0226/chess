@@ -24,7 +24,7 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 1, 1, 1],
     [2, 3, 4, 5, 6, 4, 3, 2],
   ]);
 
@@ -118,8 +118,8 @@ const Home = () => {
   const pawn = (x: number, y: number, board: number[][]) => {
     if (board[y] !== undefined && board[y][x] !== undefined) {
       if (board[y][x] === 1) {
-        if (board[y - 2] !== undefined) board[y - 2][x] = 7;
-        if (board[y - 1] !== undefined) board[y - 1][x] = 7;
+        if (board[y - 2] !== undefined && board[y - 2][x] === 0) board[y - 2][x] = 7;
+        if (board[y - 1] !== undefined && board[y - 1][x] === 0) board[y - 1][x] = 7;
       }
     }
   };
