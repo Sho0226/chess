@@ -366,7 +366,7 @@ const Home = () => {
               backgroundColor: isEven ? '#f7c899' : '#ca8745',
               width: `${cellSize / 6.4}%`,
               height: `${cellSize / 6.4}%`,
-              position: 'relative' as const, // 相対位置を設定してオーバーレイを可能にする
+              position: 'relative' as const, // 型キャストを追加
             };
             const imageSrc = getImageSrc(piece)?.src;
 
@@ -377,7 +377,7 @@ const Home = () => {
                 key={`${x}-${y}`}
                 onClick={() => clickHandler(x, y)}
               >
-                {imageSrc !== null && (
+                {imageSrc && (
                   <img
                     className={styles.imgstyle}
                     src={imageSrc}
