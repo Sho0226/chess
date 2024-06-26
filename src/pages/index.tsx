@@ -23,7 +23,7 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
     [2, 3, 4, 5, 6, 4, 3, 2],
   ]);
 
@@ -125,8 +125,8 @@ const Home = () => {
             const isEven = (y + x) % 2 === 0;
             const cellStyle = {
               backgroundColor: isEven ? '#f7c899' : '#ca8745',
-              width: `${cellSize}px`,
-              height: `${cellSize}px`,
+              width: `${cellSize / 6.4}%`,
+              height: `${cellSize / 6.4}%`,
             };
             const imageSrc = getImageSrc(color)?.src; // 画像ソースの取得
             const content =
