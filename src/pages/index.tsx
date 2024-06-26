@@ -128,9 +128,8 @@ const Home = () => {
     if (piece === 5 || piece === -5) king(x, y, board);
     if (piece === 6 || piece === -6) queen(x, y, board);
   };
-
   const clickHandler = (x: number, y: number) => {
-    if (gameOver) return; // ゲームオーバー時は操作を受け付けない
+    if (gameOver) return;
 
     const newBoard = structuredClone(board);
     const currentTurn = turn === 'white' ? 1 : -1;
@@ -147,7 +146,9 @@ const Home = () => {
         if (newIsCheck) {
           const newIsCheckmate = Checkmate(newBoard, oppositeColor);
           setIsCheckmate(newIsCheckmate);
-          if (newIsCheckmate) setGameOver(true); // チェックメイトの場合ゲームオーバーにする
+          if (newIsCheckmate) {
+            setGameOver(true);
+          }
         } else {
           setIsCheckmate(false);
         }
@@ -176,6 +177,27 @@ const Home = () => {
       if (newBoard[y][x].piece !== 0) {
         setSelectedPiece({ x, y });
         setSelectedPieceValue(newBoard[y][x].piece);
+      }
+    }
+
+    // チェック状態でチェックから逃れる以外の手を禁止する
+    if (isCheck && selectedPiece !== null) {
+      const validMoves = [];
+      for (let y = 0; y < 8; y++) {
+        for (let x = 0; x < 8; x++) {
+          if (newBoard[y][x].isCandidate) {
+            const tempBoard = structuredClone(newBoard);
+            tempBoard[y][x].piece = tempBoard[selectedPiece.y][selectedPiece.x].piece;
+            tempBoard[selectedPiece.y][selectedPiece.x].piece = 0;
+            if (!isKingInCheck(tempBoard, turn)) {
+              validMoves.push({ x, y });
+            }
+          }
+        }
+      }
+      resetCandidateMoves(newBoard);
+      for (const move of validMoves) {
+        newBoard[move.y][move.x].isCandidate = true;
       }
     }
 
