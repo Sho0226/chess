@@ -17,6 +17,7 @@ const Home = () => {
   type CellType = {
     piece: number;
     isCandidate: boolean;
+    isCapture: boolean;
     z: number;
   };
 
@@ -42,6 +43,7 @@ const Home = () => {
           .map((_, x) => ({
             piece: pieces[y][x],
             isCandidate: false,
+            isCapture: false,
             z: 0,
           })),
       );
@@ -56,6 +58,7 @@ const Home = () => {
     for (const row of board) {
       for (const cell of row) {
         cell.isCandidate = false;
+        cell.isCapture = false; // isCapture もリセット
       }
     }
   };
@@ -165,6 +168,7 @@ const Home = () => {
       board[y][x].piece !== 0
     ) {
       board[y][x].isCandidate = true;
+      board[y][x].isCapture = true; // 敵の駒を取れる場所を示す
     }
   };
 
@@ -387,7 +391,7 @@ const Home = () => {
                 )}
                 {isCandidate && (
                   <div
-                    className={styles.spinnerBox}
+                    className={`${styles.spinnerBox} ${board[y][x].isCapture ? styles.captureCandidate : ''}`}
                     style={{ width: cellSize, height: cellSize, position: 'absolute' as const }}
                   >
                     <div
