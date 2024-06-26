@@ -177,7 +177,6 @@ const Home = () => {
 
     setBoard(newBoard);
   };
-
   const getImageSrc = (piece: number) => {
     switch (piece) {
       case 1:
@@ -433,8 +432,8 @@ const Home = () => {
             const isEven = (y + x) % 2 === 0;
             const cellStyle = {
               backgroundColor: isEven ? '#f7c899' : '#ca8745',
-              width: `${cellSize}px`,
-              height: `${cellSize}px`,
+              width: `${cellSize / 6.4}%`,
+              height: `${cellSize / 6.4}%`,
               position: 'relative' as const,
             };
             const imageSrc = getImageSrc(piece)?.src;
