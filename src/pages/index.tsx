@@ -158,23 +158,26 @@ const Home = () => {
         resetCandidateMoves(newBoard);
         setTurn(turn === 'white' ? 'black' : 'white');
       } else {
-        resetCandidateMoves(newBoard);
-        setSelectedPiece({ x, y });
-        setSelectedPieceValue(newBoard[y][x].piece);
-        displayCandidateMoves(x, y, newBoard);
+        // 自分の駒を再選択した場合は候補地を更新する
+        if (
+          (currentTurn === 1 && newBoard[y][x].piece > 0) ||
+          (currentTurn === -1 && newBoard[y][x].piece < 0)
+        ) {
+          resetCandidateMoves(newBoard);
+          setSelectedPiece({ x, y });
+          setSelectedPieceValue(newBoard[y][x].piece);
+          displayCandidateMoves(x, y, newBoard);
+        }
       }
     } else {
+      // 自分の駒をクリックした場合のみ選択
       if (
-        (currentTurn === 1 && newBoard[y][x].piece <= 0) ||
-        (currentTurn === -1 && newBoard[y][x].piece >= 0)
+        (currentTurn === 1 && newBoard[y][x].piece > 0) ||
+        (currentTurn === -1 && newBoard[y][x].piece < 0)
       ) {
-        return;
-      }
+        resetCandidateMoves(newBoard);
+        displayCandidateMoves(x, y, newBoard);
 
-      resetCandidateMoves(newBoard);
-      displayCandidateMoves(x, y, newBoard);
-
-      if (newBoard[y][x].piece !== 0) {
         setSelectedPiece({ x, y });
         setSelectedPieceValue(newBoard[y][x].piece);
       }
