@@ -519,9 +519,9 @@ const Home = () => {
               className={styles.pieceDescription}
               onClick={() => toggleDescription(piece.name)}
             >
-              <img src={piece.src.src} style={{ width: '40px', height: '40px' }} alt={piece.name} />
-              <p>{piece.name}</p>
+              <img src={piece.src.src} style={{ width: '12.5%' }} alt={piece.name} />
               <div className={styles.descriptionContainer}>
+                <p>{piece.name}</p>
                 {visibleDescription === piece.name && (
                   <p className={styles.descriptionText}>{piece.description}</p>
                 )}

@@ -4,7 +4,7 @@
   align-items: flex-start; /* 上揃え */
   justify-content: center;
   height: 100vh;
-  padding: 0 0.5rem;
+  padding: 2rem;
   background-image: url('../assets/images/background.png');
 }
 
@@ -32,8 +32,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
-  width: 40%;
+  justify-content: flex-start;
+  width: 100%;
 }
 
 .boardstyle {
@@ -188,33 +188,27 @@
 }
 
 .pieceDescription {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  margin: 1%;
-  margin-top: 6%;
+  padding: 0.2rem 0; /* 上下のパディングを追加 */
+  margin: 0; /* 上下のマージンをなくす */
   font-family: cursive;
 }
 
 .pieceDescription img {
-  margin-right: 0.5%;
+  margin-right: 0.5rem; /* 駒とテキストの間の余白 */
 }
 
 .pieceDescription p {
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: auto;
-  white-space: pre;
+  margin: 0;
+  white-space: pre-line;
 }
 
 .descriptionContainer {
-  align-items: center;
-  justify-content: center;
-  width: 100%; /* 説明テキストの領域を確保 */
-  height: auto;
+  flex: 1;
+  margin-left: 0.2rem; /* テキストと説明文の間の余白 */
 }
 
 .descriptionText {
-  height: 20%;
   font-size: 0.9rem;
 }
