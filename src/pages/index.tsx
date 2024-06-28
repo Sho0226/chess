@@ -56,6 +56,7 @@ const Home = () => {
   const [isCheck, setIsCheck] = useState<boolean>(false);
   const [isCheckmate, setIsCheckmate] = useState<boolean>(false);
   const [gameOver, setGameOver] = useState<boolean>(false);
+  const [winner, setWinner] = useState<'white' | 'black' | null>(null);
 
   const isKingInCheck = (board: BoardType, color: 'white' | 'black'): boolean => {
     let kingPosition: { x: number; y: number } | null = null;
@@ -128,6 +129,7 @@ const Home = () => {
     if (piece === 5 || piece === -5) king(x, y, board);
     if (piece === 6 || piece === -6) queen(x, y, board);
   };
+
   const clickHandler = (x: number, y: number) => {
     if (gameOver) return;
 
@@ -136,14 +138,15 @@ const Home = () => {
 
     if (selectedPiece) {
       if (newBoard[y][x].isCandidate && selectedPieceValue !== null) {
-        // キングが取られたか確認
-        if (Math.abs(newBoard[y][x].piece) === 5) {
-          setGameOver(true);
-          return;
-        }
-
+        const capturedPiece = newBoard[y][x].piece;
         newBoard[selectedPiece.y][selectedPiece.x].piece = 0;
         newBoard[y][x].piece = selectedPieceValue;
+
+        if (Math.abs(capturedPiece) === 5) {
+          setGameOver(true);
+          setWinner(turn === 'white' ? 'white' : 'black');
+          return;
+        }
 
         const oppositeColor = turn === 'white' ? 'black' : 'white';
         const newIsCheck = isKingInCheck(newBoard, oppositeColor);
@@ -154,6 +157,7 @@ const Home = () => {
           setIsCheckmate(newIsCheckmate);
           if (newIsCheckmate) {
             setGameOver(true);
+            setWinner(turn);
           }
         } else {
           setIsCheckmate(false);
@@ -221,6 +225,7 @@ const Home = () => {
     setIsCheck(false);
     setIsCheckmate(false);
     setGameOver(false);
+    setWinner(null);
   };
 
   const getImageSrc = (piece: number) => {
@@ -466,17 +471,47 @@ const Home = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.turnIndicator}>
-        {turn === 'white' ? "White's Turn" : "Black's Turn"}
-        {isCheck && <span> - Check!</span>}
-        {isCheckmate && <span> - Checkmate!</span>}
-        {gameOver && <span> - Game Over</span>}
+      <div className={styles.sidePanel}>
+        <button onClick={resetGame} className={styles.resetButton}>
+          Reset Game
+        </button>
+        <div className={styles.turnIndicator}>
+          {!gameOver ? (
+            <>
+              {turn === 'white' ? "White's Turn" : "Black's Turn"}
+              {isCheck && <span> - Check!</span>}
+              {isCheckmate && <span> - Checkmate!</span>}
+            </>
+          ) : (
+            <>{winner === 'white' ? 'White Wins!' : 'Black Wins!'}</>
+          )}
+        </div>
+        <div className={styles.pieceDescription}>
+          <img src={oneWhite.src} alt="White Pawn" style={{ width: '10%', height: '0%' }} />
+          <p>Pawn</p>
+        </div>
+        <div className={styles.pieceDescription}>
+          <img src={twoWhite.src} alt="White Pawn" style={{ width: '10%', height: '0%' }} />
+          <p>White Pawn</p>
+        </div>
+        <div className={styles.pieceDescription}>
+          <img src={oneWhite.src} alt="White Pawn" style={{ width: '10%', height: '0%' }} />
+          <p>White Pawn</p>
+        </div>
+        <div className={styles.pieceDescription}>
+          <img src={oneWhite.src} alt="White Pawn" style={{ width: '10%', height: '0%' }} />
+          <p>White Pawn</p>
+        </div>
+        <div className={styles.pieceDescription}>
+          <img src={oneWhite.src} alt="White Pawn" style={{ width: '10%', height: '0%' }} />
+          <p>White Pawn</p>
+        </div>
+        <div className={styles.pieceDescription}>
+          <img src={oneWhite.src} alt="White Pawn" style={{ width: '10%', height: '0%' }} />
+          <p>White Pawn</p>
+        </div>
+        {/* 他の駒の説明も同様に追加 */}
       </div>
-
-      <button onClick={resetGame} className={styles.resetButton}>
-        Reset Game
-      </button>
-
       <div className={styles.boardstyle}>
         {board.map((row, y) =>
           row.map(({ piece, isCandidate, isCapture }, x) => {
