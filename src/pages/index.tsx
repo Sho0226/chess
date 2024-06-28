@@ -14,6 +14,30 @@ import sixBlack from '../assets/images/6b.png';
 import sixWhite from '../assets/images/6w.png';
 
 const Home = () => {
+  const [visibleDescription, setVisibleDescription] = useState<string | null>(null);
+
+  const toggleDescription = (piece: string) => {
+    setVisibleDescription((prev) => (prev === piece ? null : piece));
+  };
+
+  const pieces = [
+    {
+      src: oneWhite,
+      name: 'Pawn',
+      description:
+        '前に1マス移動できる\nただし1マス前に相手の駒がいると、取れないし動けない\n相手の駒が斜め1マス前にいるときのみ、その駒を取って斜め前に動ける\n最初に動くときだけ2マス前に移動できる',
+    },
+    { src: twoWhite, name: 'Rook', description: '縦横の方向には何マスでも移動できます' },
+    { src: threeWhite, name: 'Knight', description: '2つ前進して1つ左右に移動する' },
+    { src: fourWhite, name: 'Bishop', description: '斜めの方向には何マスでも移動する' },
+    { src: fiveWhite, name: 'King', description: '縦横斜めに１マスずつ移動できます' },
+    {
+      src: sixWhite,
+      name: 'Queen',
+      description: '縦横斜めのどの方向にも、何マスでも移動できます',
+    },
+  ];
+
   type CellType = {
     piece: number;
     isCandidate: boolean;
@@ -471,46 +495,40 @@ const Home = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.sidePanel}>
-        <button onClick={resetGame} className={styles.resetButton}>
-          Reset Game
-        </button>
-        <div className={styles.turnIndicator}>
-          {!gameOver ? (
-            <>
-              {turn === 'white' ? "White's Turn" : "Black's Turn"}
-              {isCheck && <span> - Check!</span>}
-              {isCheckmate && <span> - Checkmate!</span>}
-            </>
-          ) : (
-            <>{winner === 'white' ? 'White Wins!' : 'Black Wins!'}</>
-          )}
+      <div className={styles.leftPanel}>
+        <div className={styles.topPanel}>
+          <button onClick={resetGame} className={styles.resetButton}>
+            Reset Game
+          </button>
+          <div className={styles.turnIndicator}>
+            {!gameOver ? (
+              <>
+                {turn === 'white' ? "White's Turn" : "Black's Turn"}
+                {isCheck && <span> - Check!</span>}
+                {isCheckmate && <span> - Checkmate!</span>}
+              </>
+            ) : (
+              <>{winner === 'white' ? 'White Wins!' : 'Black Wins!'}</>
+            )}
+          </div>
         </div>
-        <div className={styles.pieceDescription}>
-          <img src={oneWhite.src} alt="White Pawn" style={{ width: '10%', height: '0%' }} />
-          <p>Pawn</p>
+        <div className={styles.sidePanel}>
+          {pieces.map((piece, index) => (
+            <div
+              key={index}
+              className={styles.pieceDescription}
+              onClick={() => toggleDescription(piece.name)}
+            >
+              <img src={piece.src.src} style={{ width: '40px', height: '40px' }} alt={piece.name} />
+              <p>{piece.name}</p>
+              <div className={styles.descriptionContainer}>
+                {visibleDescription === piece.name && (
+                  <p className={styles.descriptionText}>{piece.description}</p>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
-        <div className={styles.pieceDescription}>
-          <img src={twoWhite.src} alt="White Pawn" style={{ width: '10%', height: '0%' }} />
-          <p>White Pawn</p>
-        </div>
-        <div className={styles.pieceDescription}>
-          <img src={oneWhite.src} alt="White Pawn" style={{ width: '10%', height: '0%' }} />
-          <p>White Pawn</p>
-        </div>
-        <div className={styles.pieceDescription}>
-          <img src={oneWhite.src} alt="White Pawn" style={{ width: '10%', height: '0%' }} />
-          <p>White Pawn</p>
-        </div>
-        <div className={styles.pieceDescription}>
-          <img src={oneWhite.src} alt="White Pawn" style={{ width: '10%', height: '0%' }} />
-          <p>White Pawn</p>
-        </div>
-        <div className={styles.pieceDescription}>
-          <img src={oneWhite.src} alt="White Pawn" style={{ width: '10%', height: '0%' }} />
-          <p>White Pawn</p>
-        </div>
-        {/* 他の駒の説明も同様に追加 */}
       </div>
       <div className={styles.boardstyle}>
         {board.map((row, y) =>

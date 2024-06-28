@@ -1,20 +1,39 @@
 .container {
   display: flex;
-  flex-direction: row; /* 横並びにする */
-  align-items: flex-start; /* 上揃えにする */
+  flex-direction: row;
+  align-items: flex-start; /* 上揃え */
   justify-content: center;
   height: 100vh;
-  min-height: 100vh;
   padding: 0 0.5rem;
   background-image: url('../assets/images/background.png');
+}
+
+.leftPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 左揃え */
+  justify-content: flex-start; /* 上揃え */
+  width: 35%;
+  height: 100%; /* 左側の高さを全体に合わせる */
+  padding-right: 1rem;
+}
+
+.topPanel {
+  display: flex;
+  flex-direction: row; /* 横並び */
+  align-items: center; /* 中央揃え */
+  justify-content: center; /* 中央揃え */
+  width: 100%; /* 横幅を全体に合わせる */
+  padding: 1rem; /* パディングを追加 */
+  margin-bottom: 1rem; /* 下に少し余白を追加 */
 }
 
 .sidePanel {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  margin-right: 15%; /* ボードとの間にスペースを作る */
+  align-items: flex-start;
+  justify-content: center;
+  width: 40%;
 }
 
 .boardstyle {
@@ -32,11 +51,11 @@
 }
 
 .cellstyle:nth-child(odd) {
-  background-color: f7c899;
+  background-color: #f7c899;
 }
 
 .cellstyle:nth-child(even) {
-  background-color: ca8745;
+  background-color: #ca8745;
 }
 
 .imgstyle {
@@ -129,6 +148,7 @@
 }
 
 .turnIndicator {
+  margin-left: 1rem; /* ターン表示に余白を追加 */
   font-size: 150%;
   font-weight: bold;
   text-align: center;
@@ -168,11 +188,33 @@
 }
 
 .pieceDescription {
-  display: flex;
   align-items: center;
-  margin: 0.5% 0;
+  justify-content: center;
+  margin: 1%;
+  margin-top: 6%;
+  font-family: cursive;
 }
 
 .pieceDescription img {
   margin-right: 0.5%;
+}
+
+.pieceDescription p {
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+  white-space: pre;
+}
+
+.descriptionContainer {
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* 説明テキストの領域を確保 */
+  height: auto;
+}
+
+.descriptionText {
+  height: 20%;
+  font-size: 0.9rem;
 }
