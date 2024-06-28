@@ -136,6 +136,12 @@ const Home = () => {
 
     if (selectedPiece) {
       if (newBoard[y][x].isCandidate && selectedPieceValue !== null) {
+        // キングが取られたか確認
+        if (Math.abs(newBoard[y][x].piece) === 5) {
+          setGameOver(true);
+          return;
+        }
+
         newBoard[selectedPiece.y][selectedPiece.x].piece = 0;
         newBoard[y][x].piece = selectedPieceValue;
 
