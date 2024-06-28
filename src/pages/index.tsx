@@ -27,14 +27,14 @@ const Home = () => {
       description:
         '前に1マス移動できる\nただし1マス前に相手の駒がいると、取れないし動けない\n相手の駒が斜め1マス前にいるときのみ、その駒を取って斜め前に動ける\n最初に動くときだけ2マス前に移動できる',
     },
-    { src: twoWhite, name: 'Rook', description: '縦横の方向には何マスでも移動できます' },
-    { src: threeWhite, name: 'Knight', description: '2つ前進して1つ左右に移動する' },
-    { src: fourWhite, name: 'Bishop', description: '斜めの方向には何マスでも移動する' },
-    { src: fiveWhite, name: 'King', description: '縦横斜めに１マスずつ移動できます' },
+    { src: twoWhite, name: 'Rook', description: '縦横の方向には何マスでも移動できる' },
+    { src: threeWhite, name: 'Knight', description: '2つ前進して1つ左右に移動できる' },
+    { src: fourWhite, name: 'Bishop', description: '斜めの方向には何マスでも移動できる' },
+    { src: fiveWhite, name: 'King', description: '縦横斜めに１マスずつ移動できる' },
     {
       src: sixWhite,
       name: 'Queen',
-      description: '縦横斜めのどの方向にも、何マスでも移動できます',
+      description: '縦横斜めのどの方向にも、何マスでも移動できる',
     },
   ];
 
