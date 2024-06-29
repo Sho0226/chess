@@ -44,20 +44,10 @@
   background-color: green;
 }
 
-@media (width > 1200px) {
-  .pieceImage {
-    width: 12.5%;
-  }
-}
-
 @media (width <= 1200px) {
   .boardstyle {
     width: 75vh;
     height: 75vh;
-  }
-
-  .pieceImage {
-    width: 12.5%;
   }
 }
 
@@ -65,10 +55,6 @@
   .boardstyle {
     width: 60vh;
     height: 60vh;
-  }
-
-  .pieceImage {
-    width: 12.5%;
   }
 }
 
@@ -88,10 +74,6 @@
 
   .descriptionContainer {
     display: inline-flex;
-  }
-
-  .pieceImage {
-    width: 10%;
   }
 }
 
@@ -286,7 +268,6 @@
 }
 
 .pieceDescription p {
-  margin: 0;
   white-space: pre-line;
 }
 
@@ -296,5 +277,6 @@
 }
 
 .descriptionText {
+  margin: 5%;
   font-size: 0.9rem;
 }
