@@ -110,7 +110,7 @@
   background-color: #f7c899;
 }
 
-35vh.cellstyle:nth-child(even) {
+.cellstyle:nth-child(even) {
   background-color: #ca8745;
 }
 
