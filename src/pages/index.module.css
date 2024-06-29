@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start; /* 上揃え */
-  justify-content: center;
+  justify-content: flex-start;
   height: 100vh;
   padding: 2rem;
   background-image: url('../assets/images/background.png');
@@ -14,7 +14,7 @@
   align-items: flex-start; /* 左揃え */
   justify-content: flex-start; /* 上揃え */
   width: 35%;
-  height: 100%; /* 左側の高さを全体に合わせる */
+  height: 50vh; /* 左側の高さを全体に合わせる */
   padding-right: 1rem;
 }
 
@@ -34,6 +34,7 @@
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
+  overflow-y: auto;
 }
 
 .boardstyle {
@@ -41,20 +42,35 @@
   flex-wrap: wrap;
   width: 90vh;
   height: 90vh;
+  margin-inline: auto;
   background-color: green;
 }
 
-@media (width <= 1200px) {
+@media (width > 1200px) {
+  .leftPanel {
+    height: 100vh;
+  }
+}
+
+@media (900px < width <= 1200px) {
   .boardstyle {
     width: 75vh;
     height: 75vh;
   }
+
+  .leftPanel {
+    height: 100vh;
+  }
 }
 
-@media (width <= 900px) {
+@media (800px < width <= 900px) {
   .boardstyle {
     width: 60vh;
     height: 60vh;
+  }
+
+  .leftPanel {
+    height: 100vh;
   }
 }
 
@@ -69,7 +85,7 @@
   }
 
   .leftPanel {
-    width: 70%;
+    width: 100%;
   }
 
   .descriptionContainer {
@@ -261,6 +277,7 @@
   padding: 0.2rem 0; /* 上下のパディングを追加 */
   margin: 0; /* 上下のマージンをなくす */
   font-family: cursive;
+  cursor: pointer;
 }
 
 .pieceDescription img {
