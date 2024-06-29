@@ -44,10 +44,20 @@
   background-color: green;
 }
 
+@media (width > 1200px) {
+  .pieceImage {
+    width: 12.5%;
+  }
+}
+
 @media (width <= 1200px) {
   .boardstyle {
     width: 75vh;
     height: 75vh;
+  }
+
+  .pieceImage {
+    width: 12.5%;
   }
 }
 
@@ -56,12 +66,32 @@
     width: 60vh;
     height: 60vh;
   }
+
+  .pieceImage {
+    width: 12.5%;
+  }
 }
 
 @media (width <= 800px) {
   .boardstyle {
     width: 55vh;
     height: 55vh;
+  }
+
+  .container {
+    display: grid;
+  }
+
+  .leftPanel {
+    width: 70%;
+  }
+
+  .descriptionContainer {
+    display: inline-flex;
+  }
+
+  .pieceImage {
+    width: 10%;
   }
 }
 
