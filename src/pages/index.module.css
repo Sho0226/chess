@@ -44,6 +44,62 @@
   background-color: green;
 }
 
+@media (width <= 1200px) {
+  .boardstyle {
+    width: 75vh;
+    height: 75vh;
+  }
+}
+
+@media (width <= 900px) {
+  .boardstyle {
+    width: 60vh;
+    height: 60vh;
+  }
+}
+
+@media (width <= 800px) {
+  .boardstyle {
+    width: 55vh;
+    height: 55vh;
+  }
+}
+
+@media (width <= 700px) {
+  .boardstyle {
+    width: 50vh;
+    height: 50vh;
+  }
+}
+
+@media (width <= 600px) {
+  .boardstyle {
+    width: 45vh;
+    height: 45vh;
+  }
+}
+
+@media (width <= 500px) {
+  .boardstyle {
+    width: 40vh;
+    height: 40vh;
+  }
+}
+
+@media (width <= 400px) {
+  .boardstyle {
+    width: 35vh;
+    height: 35vh;
+  }
+}
+
+@media (width <= 300px) {
+  .boardstyle {
+    width: 30vh;
+    height: 30vh;
+  }
+}
+
 .cellstyle {
   display: flex;
   align-items: center;
@@ -54,7 +110,7 @@
   background-color: #f7c899;
 }
 
-.cellstyle:nth-child(even) {
+35vh.cellstyle:nth-child(even) {
   background-color: #ca8745;
 }
 
