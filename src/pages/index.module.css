@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start; /* 上揃え */
-  justify-content: flex-start;
   height: 100vh;
   padding: 2rem;
   background-image: url('../assets/images/background.png');
@@ -22,7 +21,7 @@
   display: flex;
   flex-direction: row; /* 横並び */
   align-items: center; /* 中央揃え */
-  justify-content: center; /* 中央揃え */
+  justify-content: space-between; /* 中央揃え */
   width: 100%; /* 横幅を全体に合わせる */
   padding: 1rem; /* パディングを追加 */
   margin-bottom: 1rem; /* 下に少し余白を追加 */
@@ -232,10 +231,11 @@
 }
 
 .turnIndicator {
-  margin-left: 1rem; /* ターン表示に余白を追加 */
+  flex-grow: 1; /* 追加: 残りのスペースを占有 */
+  min-width: 200px; /* 追加: 最小幅を設定 */
   font-size: 150%;
   font-weight: bold;
-  text-align: center;
+  text-align: center; /* 追加: テキストを中央揃え */
 }
 
 .captureCandidate {
@@ -257,10 +257,12 @@
 }
 
 .resetButton {
+  width: 120px; /* 追加: ボタンの幅を固定 */
   padding: 0.5rem 1rem;
   font-size: 1rem;
   font-weight: bold;
   color: white;
+  text-align: center; /* 追加: テキストを中央揃え */
   cursor: pointer;
   background-color: #ff5e5e;
   border: none;
