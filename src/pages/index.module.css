@@ -1,8 +1,5 @@
 .container {
   display: flex;
-  flex-direction: row;
-  align-items: flex-start; /* 上揃え */
-  height: 100vh;
   padding: 2rem;
   background-image: url('../assets/images/background.png');
 }
@@ -10,21 +7,16 @@
 .leftPanel {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* 左揃え */
-  justify-content: flex-start; /* 上揃え */
   width: 35%;
   height: 50vh; /* 左側の高さを全体に合わせる */
-  padding-right: 1rem;
 }
 
 .topPanel {
   display: flex;
   flex-direction: row; /* 横並び */
   align-items: center; /* 中央揃え */
-  justify-content: space-between; /* 中央揃え */
   width: 100%; /* 横幅を全体に合わせる */
   padding: 1rem; /* パディングを追加 */
-  margin-bottom: 1rem; /* 下に少し余白を追加 */
 }
 
 .sidePanel {
