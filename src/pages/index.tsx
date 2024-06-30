@@ -564,20 +564,20 @@ const Home = () => {
                   >
                     <div
                       className={styles.configureBorder1}
-                      style={{ width: cellSize * 0.4, height: cellSize * 0.4 }}
+                      style={{ width: cellSize * 0.2, height: cellSize * 0.2 }}
                     >
                       <div
                         className={`${styles.configure1}  ${styles.configure4}`}
-                        style={{ width: cellSize * 0.4, height: cellSize * 0.4 }}
+                        style={{ width: cellSize * 0.2, height: cellSize * 0.2 }}
                       />
                     </div>
                     <div
                       className={styles.configureBorder2}
-                      style={{ width: cellSize * 0.4, height: cellSize * 0.4 }}
+                      style={{ width: cellSize * 0.2, height: cellSize * 0.2 }}
                     >
                       <div
                         className={`${styles.configure2}  ${styles.configure3}`}
-                        style={{ width: cellSize * 0.4, height: cellSize * 0.4 }}
+                        style={{ width: cellSize * 0.2, height: cellSize * 0.2 }}
                       />
                     </div>
                   </div>
