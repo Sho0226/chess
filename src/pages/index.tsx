@@ -218,25 +218,25 @@ const Home = () => {
     }
 
     // チェック状態でチェックから逃れる以外の手を禁止する
-    if (isCheck && selectedPiece !== null) {
-      const validMoves = [];
-      for (let y = 0; y < 8; y++) {
-        for (let x = 0; x < 8; x++) {
-          if (newBoard[y][x].isCandidate) {
-            const tempBoard = structuredClone(newBoard);
-            tempBoard[y][x].piece = tempBoard[selectedPiece.y][selectedPiece.x].piece;
-            tempBoard[selectedPiece.y][selectedPiece.x].piece = 0;
-            if (!isKingInCheck(tempBoard, turn)) {
-              validMoves.push({ x, y });
-            }
-          }
-        }
-      }
-      resetCandidateMoves(newBoard);
-      for (const move of validMoves) {
-        newBoard[move.y][move.x].isCandidate = true;
-      }
-    }
+    // if (isCheck && selectedPiece !== null) {
+    //   const validMoves = [];
+    //   for (let y = 0; y < 8; y++) {
+    //     for (let x = 0; x < 8; x++) {
+    //       if (newBoard[y][x].isCandidate) {
+    //         const tempBoard = structuredClone(newBoard);
+    //         tempBoard[y][x].piece = tempBoard[selectedPiece.y][selectedPiece.x].piece;
+    //         tempBoard[selectedPiece.y][selectedPiece.x].piece = 0;
+    //         if (!isKingInCheck(tempBoard, turn)) {
+    //           validMoves.push({ x, y });
+    //         }
+    //       }
+    //     }
+    //   }
+    //   resetCandidateMoves(newBoard);
+    //   for (const move of validMoves) {
+    //     newBoard[move.y][move.x].isCandidate = true;
+    //   }
+    // }
 
     setBoard(newBoard);
   };
