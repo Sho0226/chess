@@ -169,6 +169,8 @@ const Home = () => {
         if (Math.abs(capturedPiece) === 5) {
           setGameOver(true);
           setWinner(turn === 'white' ? 'white' : 'black');
+          resetCandidateMoves(newBoard); // 候補地をリセット
+          setBoard(newBoard);
           return;
         }
 
