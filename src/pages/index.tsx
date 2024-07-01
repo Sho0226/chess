@@ -166,24 +166,33 @@ const Home = () => {
         newBoard[selectedPiece.y][selectedPiece.x].piece = 0;
         newBoard[y][x].piece = selectedPieceValue;
 
+        const oppositeColor = turn === 'white' ? 'black' : 'white';
+
+        // 勝敗が決定した場合
         if (Math.abs(capturedPiece) === 5) {
           setGameOver(true);
           setWinner(turn === 'white' ? 'white' : 'black');
           resetCandidateMoves(newBoard); // 候補地をリセット
+          setIsCheckmate(true); // Checkmateを表示するために追加
           setBoard(newBoard);
           return;
         }
 
-        const oppositeColor = turn === 'white' ? 'black' : 'white';
+        // 相手のターンでキングがチェックされているか確認
         const newIsCheck = isKingInCheck(newBoard, oppositeColor);
         setIsCheck(newIsCheck);
 
+        // チェックがある場合、相手のターンでチェックメイトを確認
         if (newIsCheck) {
           const newIsCheckmate = Checkmate(newBoard, oppositeColor);
           setIsCheckmate(newIsCheckmate);
           if (newIsCheckmate) {
             setGameOver(true);
             setWinner(turn);
+            resetCandidateMoves(newBoard); // 候補地をリセット
+            setIsCheckmate(true); // Checkmateを表示するために追加
+            setBoard(newBoard);
+            return;
           }
         } else {
           setIsCheckmate(false);
@@ -193,6 +202,14 @@ const Home = () => {
         setSelectedPieceValue(null);
         resetCandidateMoves(newBoard);
         setTurn(turn === 'white' ? 'black' : 'white');
+
+        // 自分のターンでチェックメイトを確認
+        const isOpponentInCheckmate = Checkmate(newBoard, turn === 'white' ? 'black' : 'white');
+        if (isOpponentInCheckmate) {
+          setGameOver(true);
+          setWinner(turn === 'white' ? 'white' : 'black');
+          setIsCheckmate(true);
+        }
       } else {
         // 自分の駒を再選択した場合は候補地を更新する
         if (
@@ -219,30 +236,8 @@ const Home = () => {
       }
     }
 
-    // チェック状態でチェックから逃れる以外の手を禁止する
-    // if (isCheck && selectedPiece !== null) {
-    //   const validMoves = [];
-    //   for (let y = 0; y < 8; y++) {
-    //     for (let x = 0; x < 8; x++) {
-    //       if (newBoard[y][x].isCandidate) {
-    //         const tempBoard = structuredClone(newBoard);
-    //         tempBoard[y][x].piece = tempBoard[selectedPiece.y][selectedPiece.x].piece;
-    //         tempBoard[selectedPiece.y][selectedPiece.x].piece = 0;
-    //         if (!isKingInCheck(tempBoard, turn)) {
-    //           validMoves.push({ x, y });
-    //         }
-    //       }
-    //     }
-    //   }
-    //   resetCandidateMoves(newBoard);
-    //   for (const move of validMoves) {
-    //     newBoard[move.y][move.x].isCandidate = true;
-    //   }
-    // }
-
     setBoard(newBoard);
   };
-
   const resetGame = () => {
     setBoard(initializeBoard());
     setTurn('white');
@@ -510,7 +505,10 @@ const Home = () => {
                 {isCheckmate && <span> - Checkmate!</span>}
               </>
             ) : (
-              <>{winner === 'white' ? 'White Wins!' : 'Black Wins!'}</>
+              <>
+                {winner === 'white' ? 'White Wins!' : 'Black Wins!'}
+                {isCheckmate && <span> - Checkmate!</span>}
+              </>
             )}
           </div>
         </div>
