@@ -6,7 +6,7 @@ export default function Document() {
       <Head>
         <title>Chess</title>
         <meta name="description" content="Chess" />
-        <link rel="icon" href="fabicon.png" />
+        <link rel="icon" href="favicon.png" />
       </Head>
       <body>
         <Main />
