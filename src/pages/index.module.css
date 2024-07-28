@@ -8,15 +8,15 @@
   display: flex;
   flex-direction: column;
   width: 35%;
-  height: 50vh; /* 左側の高さを全体に合わせる */
+  height: 50vh;
 }
 
 .topPanel {
   display: flex;
-  flex-direction: row; /* 横並び */
-  align-items: center; /* 中央揃え */
-  width: 100%; /* 横幅を全体に合わせる */
-  padding: 1rem; /* パディングを追加 */
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
 }
 
 .sidePanel {
@@ -223,11 +223,11 @@
 }
 
 .turnIndicator {
-  flex-grow: 1; /* 追加: 残りのスペースを占有 */
-  min-width: 200px; /* 追加: 最小幅を設定 */
+  flex-grow: 1;
+  min-width: 200px;
   font-size: 150%;
   font-weight: bold;
-  text-align: center; /* 追加: テキストを中央揃え */
+  text-align: center;
 }
 
 .captureCandidate {
@@ -249,12 +249,12 @@
 }
 
 .resetButton {
-  width: 120px; /* 追加: ボタンの幅を固定 */
+  width: 120px;
   padding: 0.5rem 1rem;
   font-size: 1rem;
   font-weight: bold;
   color: white;
-  text-align: center; /* 追加: テキストを中央揃え */
+  text-align: center;
   cursor: pointer;
   background-color: #ff5e5e;
   border: none;
@@ -268,14 +268,14 @@
 .pieceDescription {
   display: flex;
   align-items: center;
-  padding: 0.2rem 0; /* 上下のパディングを追加 */
-  margin: 0; /* 上下のマージンをなくす */
+  padding: 0.2rem 0;
+  margin: 0;
   font-family: cursive;
   cursor: pointer;
 }
 
 .pieceDescription img {
-  margin-right: 0.5rem; /* 駒とテキストの間の余白 */
+  margin-right: 0.5rem;
 }
 
 .pieceDescription p {
@@ -284,7 +284,7 @@
 
 .descriptionContainer {
   flex: 1;
-  margin-left: 0.2rem; /* テキストと説明文の間の余白 */
+  margin-left: 0.2rem;
 }
 
 .descriptionText {

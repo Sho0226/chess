@@ -107,7 +107,6 @@ const Home = () => {
         }
       }
     }
-
     return false;
   };
 
@@ -168,7 +167,6 @@ const Home = () => {
 
         const oppositeColor = turn === 'white' ? 'black' : 'white';
 
-        // 勝敗が決定した場合
         if (Math.abs(capturedPiece) === 5) {
           setGameOver(true);
           setWinner(turn === 'white' ? 'white' : 'black');
@@ -189,7 +187,7 @@ const Home = () => {
           if (newIsCheckmate) {
             setGameOver(true);
             setWinner(turn);
-            resetCandidateMoves(newBoard); // 候補地をリセット
+            resetCandidateMoves(newBoard);
             setIsCheckmate(true); // Checkmateを表示するために追加
             setBoard(newBoard);
             return;
@@ -590,5 +588,4 @@ const Home = () => {
     </div>
   );
 };
-
 export default Home;
